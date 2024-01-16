@@ -1,0 +1,478 @@
+openapi: 3.0.3
+info:
+  title: Monster Trading Cards Game
+  version: 1.0.0
+  description: This is the specification of the required API endpoints for the MTCG server.
+servers:
+  - url: http://localhost:10001
+tags:
+  - name: users
+    description: User registration and login
+  - name: packages
+    description: Package creation and acquisition
+  - name: cards
+    description: Card and deck management
+  - name: game
+    description: Battle related endpoints
+  - name: trading
+    description: Card trading
+paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: Register a new user
+      description: Register a new user with username and password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+        required: true
+      responses:
+        '201':
+          description: User successfully created
+        '409':
+          description: User with same username already registered
+  /users/{username}:
+    get:
+      tags:
+        - users
+      summary: Retrieves the user data for the given username.
+      description: Retrieves the user data for the username provided in the route. Only the admin or the matching user can successfully retrieve the data.
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+            example: kienboec
+          description: The username from a user's credentials.
+      responses:
+        '200':
+          description: Data successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserData'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: User not found.
+      security:
+        - mtcgAuth: [ ]
+    put:
+      tags:
+        - users
+      summary: Updates the user data for the given username.
+      description: Retrieves the user data for the username provided in the route. Only the admin or the matching user can successfully retrieve the data.
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+            example: kienboec
+          description: The username from a user's credentials.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserData'
+        required: true
+      responses:
+        '200':
+          description: User sucessfully updated.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: User not found.
+      security:
+        - mtcgAuth: [ ]
+  /sessions:
+    post:
+      tags:
+        - users
+      summary: Login with existing user
+      description: Login a user with username and password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+        required: true
+      responses:
+        '200':
+          description: User login successful
+        '401':
+          description: Invalid username/password provided
+          content:
+            application/json:
+              schema:
+                type: string
+                description: The token for authenticated users.
+                example: kienboec-mtcgToken
+  /packages:
+    post:
+      tags:
+        - packages
+      summary: Create new card packages (requires admin)
+      description: Creates a new package from an array of cards. Only the "admin" user may do this
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Card'
+              minItems: 5
+              maxItems: 5
+        required: true
+      responses:
+        '201':
+          description: Package and cards successfully created
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Provided user is not "admin"
+        '409':
+          description: At least one card in the packages already exists
+      security:
+        - mtcgAuth: [ ]
+  /transactions/packages:
+    post:
+      tags:
+        - packages
+      summary: Acquire a card package
+      description: Buys a card package with the money of the provided user
+      responses:
+        '200':
+          description: A package has been successfully bought
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Not enough money for buying a card package
+        '404':
+          description: No card package available for buying
+      security:
+        - mtcgAuth: [ ]
+  /cards:
+    get:
+      tags:
+        - cards
+      summary: Shows a user's cards
+      description: Returns all cards that have been required by the provided user
+      responses:
+        '200':
+          description: The user has cards, the response contains these
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+        '204':
+          description: The request was fine, but the user doesn't have any cards
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - mtcgAuth: [ ]
+  /deck:
+    get:
+      tags:
+        - cards
+      summary: Shows the user's currently configured deck
+      description: Returns the cards that are owned by the uses and are put into the deck
+      parameters:
+        - in: query
+          name: format
+          required: false
+          schema:
+            type: string
+            enum: [ plain, json ]
+            default: json
+          description: The requested format of the response
+      responses:
+        '200':
+          description: The deck has cards, the response contains these
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+            text/plain:
+              schema:
+                type: string
+                description: The textual deck description.
+        '204':
+          description: The request was fine, but the deck doesn't have any cards
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - mtcgAuth: [ ]
+    put:
+      tags:
+        - cards
+      summary: Configures the deck with four provided cards
+      description: Send four card IDs to configure a new full deck. A failed request will not change the previously defined deck.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+              minItems: 4
+              maxItems: 4
+              uniqueItems: true
+        required: true
+      responses:
+        '200':
+          description: The deck has been successfully configured
+        '400':
+          description: The provided deck did not include the required amount of cards
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: At least one of the provided cards does not belong to the user or is not available.
+      security:
+        - mtcgAuth: [ ]
+  /stats:
+    get:
+      tags:
+        - game
+      summary: Retrieves the stats for an individual user
+      description: Retrieves the stats for the requesting user.
+      responses:
+        '200':
+          description: The stats could be retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStats'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - mtcgAuth: [ ]
+  /scoreboard:
+    get:
+      tags:
+        - game
+      summary: Retrieves the user scoreboard ordered by the user's ELO.
+      responses:
+        '200':
+          description: The scoreboard could be retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserStats'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - mtcgAuth: [ ]
+  /battles:
+    post:
+      tags:
+        - game
+      summary: Enters the lobby to start a battle.
+      description: If there is already another user in the lobby, the battle will start immediately. Otherwise the request will wait for another user to enter.
+      responses:
+        '200':
+          description: The battle has been carried out successfully.
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: The battle log.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /tradings:
+    get:
+      tags:
+        - trading
+      summary: Retrieves the currently available trading deals.
+      responses:
+        '200':
+          description: There are trading deals available, the response contains these
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TradingDeal'
+        '204':
+          description: The request was fine, but there are no trading deals available
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - mtcgAuth: [ ]
+    post:
+      tags:
+        - trading
+      summary: Creates a new trading deal.
+      description: Creates a new trading deal. You can only create a deal for a card you own.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradingDeal'
+        required: true
+      responses:
+        '201':
+          description: Trading deal successfully created
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: The deal contains a card that is not owned by the user or locked in the deck.
+        '409':
+          description: A deal with this deal ID already exists.
+      security:
+        - mtcgAuth: [ ]
+  /tradings/{tradingdealid}:
+    delete:
+      tags:
+        - trading
+      summary: Deletes an existing trading deal.
+      description: Deletes an existing trading deal. It is only allowed if the user owns the associated card.
+      parameters:
+        - in: path
+          name: tradingdealid
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the trading deal to delete.
+      responses:
+        '200':
+          description: Trading deal successfully deleted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: The deal contains a card that is not owned by the user.
+        '404':
+          description: The provided deal ID was not found.
+        '409':
+          description: A deal with this deal ID already exists.
+      security:
+        - mtcgAuth: [ ]
+    post:
+      tags:
+        - trading
+      summary: Carry out a trade for the deal with the provided card.
+      description: Carry out a trade for the deal with the provided card. Trading with self is not allowed.
+      parameters:
+        - in: path
+          name: tradingdealid
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the trading deal to carry out.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              format: uuid
+              description: The ID of the offered card.
+      responses:
+        '200':
+          description: Trading deal successfully executed.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: The offered card is not owned by the user, or the requirements are not met (Type, MinimumDamage), or the offered card is locked in the deck.
+        '404':
+          description: The provided deal ID was not found.
+      security:
+        - mtcgAuth: [ ]
+
+components:
+  schemas:
+    UserCredentials:
+      type: object
+      properties:
+        Username:
+          type: string
+          example: kienboec
+        Password:
+          type: string
+          example: daniel
+    UserData:
+      type: object
+      properties:
+        Name:
+          type: string
+          example: Hoax
+        Bio:
+          type: string
+          example: me playin...
+        Image:
+          type: string
+          example: :-)
+    UserStats:
+      type: object
+      properties:
+        Name:
+          type: string
+          example: Hoax
+          description: The name of the user (from the user data).
+        Elo:
+          type: integer
+        Wins:
+          type: integer
+        Losses:
+          type: integer
+    Card:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+        Name:
+          type: string
+          enum: [ WaterGoblin, FireGoblin, RegularGoblin, WaterTroll, FireTroll, RegularTroll, WaterElf, FireElf, RegularElf, WaterSpell, FireSpell, RegularSpell, Knight, Dragon, Ork, Kraken ]
+          example: WaterGoblin
+        Damage:
+          type: number
+          format: float
+          example: 55.0
+    TradingDeal:
+      type: object
+      properties:
+        Id:
+          type: string
+          format: uuid
+          description: The ID of the deal
+        CardToTrade:
+          type: string
+          format: uuid
+          description: The card ID offered
+        Type:
+          type: string
+          enum: [ monster, spell ]
+          example: monster
+          description: The required card type of the received card
+        MinimumDamage:
+          type: number
+          format: float
+          example: 15
+          description: The required minimum damage of the the received card
+
+  securitySchemes:
+    mtcgAuth:
+      type: http
+      scheme: bearer
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid

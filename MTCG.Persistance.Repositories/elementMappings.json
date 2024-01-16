@@ -1,0 +1,28 @@
+﻿{
+    "ElementsMapping" : [
+        {
+            "ElementName": "Fire",
+            "DomainClass": "Fire"
+        },
+        {
+            "ElementName": "Water",
+            "DomainClass": "Water"
+        },
+        {
+            "ElementName": "Earth",
+            "DomainClass": "Earth"
+        },
+        {
+            "ElementName": "Air",
+            "DomainClass": "Air"
+        },
+        {
+            "ElementName": "Shadow",
+            "DomainClass": "Shadow"
+        },
+        {
+            "ElementName": "Normal",
+            "DomainClass": "Normal"
+        }
+    ]
+}

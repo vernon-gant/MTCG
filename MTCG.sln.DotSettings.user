@@ -1,0 +1,26 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=DC9C6312_002D6D48_002D4AF5_002DA3D7_002D97E37B729DC2_002Fd_003Aopen_002Ff_003AControllerBase_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.hosting.abstractions\2.1.1" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.hosting.abstractions\2.2.0" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.hosting.abstractions\5.0.0" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.hosting.abstractions\7.0.0" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\2.1.0" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\2.1.1" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\2.2.0" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\3.0.0" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\3.1.11" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\5.0.0" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\6.0.0" Loaded="True" /&gt;&#xD;
+  &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\7.0.0" Loaded="True" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3e9dacdd_002De40d_002D4f2e_002D8ae4_002D60b129a5c63c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TCPListener_StartAsync_ShouldProcessRequestAndReturnHello" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::02FE6775-20B8-4A2B-A65E-0C74B313DF8D::net7.0::MTCG.Http.Test.TestTcpListener&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::02FE6775-20B8-4A2B-A65E-0C74B313DF8D::net7.0::MTCG.Http.Test.TestHttpParser.TestParseRequest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::02FE6775-20B8-4A2B-A65E-0C74B313DF8D::net7.0::MTCG.Http.Test.TestHttpParser.Parser_ParseGetRequestWithBody&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::02FE6775-20B8-4A2B-A65E-0C74B313DF8D::net7.0::MTCG.Http.Test.TestHttpParser&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
+	</wpf:ResourceDictionary>
