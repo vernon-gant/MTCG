@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using MTCG.Persistance.Repositories.Packages;
+using MTCG.Persistance.Repositories.Packages.Concrete;
 using MTCG.Persistance.Repositories.users;
 
 namespace MTCG.Persistance.Repositories;
@@ -19,16 +21,17 @@ public static class RepositoriesDefaultsConfigurator
 
         hostBuilder.ConfigureServices((context, services) =>
         {
-            List<CardMapping> cardMappings = new ();
+            Dictionary<string, CardMapping> cardMappings = new ();
             context.Configuration.GetSection("CardMappings").Bind(cardMappings);
             services.AddSingleton(cardMappings);
 
-            List<ElementMapping> elementMappings = new ();
+            Dictionary<string, ElementMapping> elementMappings = new ();
             context.Configuration.GetSection("ElementMappings").Bind(elementMappings);
             services.AddSingleton(elementMappings);
 
             services.AddSingleton<UserRepository, DefaultUserRepository>();
             services.AddSingleton<CardsRepository, DefaultCardRepository>();
+            services.AddSingleton<PackageRepository, DefaultPackageRepository>();
         });
 
         return hostBuilder;

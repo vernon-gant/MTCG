@@ -17,8 +17,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MTCG.Http\MTCG.Http.csproj"/>
-        <ProjectReference Include="..\MTCG.Services.Cards\MTCG.Services.Cards.csproj" />
-        <ProjectReference Include="..\MTCG.Services.UserService\MTCG.Services.UserService.csproj" />
+        <ProjectReference Include="..\MTCG.Services.CardServices\MTCG.Services.CardServices.csproj" />
+        <ProjectReference Include="..\MTCG.Services.PackageServices\MTCG.Services.PackageServices.csproj" />
+        <ProjectReference Include="..\MTCG.Services.UserServices\MTCG.Services.UserServices.csproj" />
     </ItemGroup>
 
     <ItemGroup>

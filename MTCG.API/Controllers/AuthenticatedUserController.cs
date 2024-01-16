@@ -22,7 +22,20 @@ public class AuthenticatedUserController : ControllerBase
     {
         try {
             if (IsUnauthorizedAccess(context,userName)) return Unauthorized("You are not allowed to access this resource!");
-            return Ok(await _authenticatedUserService.Get(userName));
+            return Ok(await _authenticatedUserService.GetUserAsync(userName));
+        }
+        catch (UserNotFoundException)
+        {
+            return NotFound("User with this name does not exist!");
+        }
+    }
+
+    [Put("/users/{username}")]
+    public async ValueTask<ActionResult> Put([FromRoute] string userName, [FromBody] UserUpdateDto userUpdateDto, HttpContext context)
+    {
+        try {
+            if (IsUnauthorizedAccess(context,userName)) return Unauthorized("You are not allowed to access this resource!");
+            return Ok(await _authenticatedUserService.UpdateUserAsync(userName, userUpdateDto));
         }
         catch (UserNotFoundException)
         {

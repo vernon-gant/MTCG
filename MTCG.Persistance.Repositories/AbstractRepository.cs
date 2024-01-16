@@ -7,7 +7,7 @@ namespace MTCG.Persistance.Database;
 public abstract class AbstractRepository
 {
 
-    protected readonly DatabaseConfig _databaseConfig;
+    private readonly DatabaseConfig _databaseConfig;
 
     protected AbstractRepository(DatabaseConfig databaseConfig)
     {

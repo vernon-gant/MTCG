@@ -19,7 +19,7 @@ public class CardsController : ControllerBase
     [Get("/all-cards")]
     public async ValueTask<ActionResult> GetAllCards()
     {
-        return Ok(await _cardsService.GetAllCards());
+        throw new NotImplementedException();
     }
 
     [Get("/cards/{id}")]

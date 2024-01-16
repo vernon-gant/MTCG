@@ -20,9 +20,9 @@ public class UserController : ControllerBase
     [Post("/users")]
     public async ValueTask<ActionResult> Register([FromBody] UserRegistrationDto userDto)
     {
-        if (_userService.Get(userDto.UserName).Result != null) return Conflict("User already exists!");
+        if (_userService.GetUserAsync(userDto.UserName).Result != null) return Conflict("User already exists!");
 
-        await _userService.Register(userDto);
+        await _userService.RegisterUserAsync(userDto);
 
         return Created("users/" + userDto.UserName);
     }
@@ -32,7 +32,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            string token = await _userService.Login(userDto);
+            string token = await _userService.LoginUserAsync(userDto);
 
             return Ok(new { token });
         }

@@ -1,56 +1,56 @@
 {
-    "CardMappings": [
-        {
-            "CardName": "Goblin",
-            "DomainClass": "Goblin"
+    "CardMappings": {
+        "Goblin": {
+            "DomainClass": "Goblin",
+            "CardId": 1
         },
-        {
-            "CardName": "Dragon",
-            "DomainClass": "Dragon"
+        "Dragon": {
+            "DomainClass": "Dragon",
+            "CardId": 2
         },
-        {
-            "CardName": "Wizard",
-            "DomainClass": "Wizard"
+        "Wizard": {
+            "DomainClass": "Wizard",
+            "CardId": 3
         },
-        {
-            "CardName": "Ork",
-            "DomainClass": "Ork"
+        "Ork": {
+            "DomainClass": "Ork",
+            "CardId": 4
         },
-        {
-            "CardName": "Knight",
-            "DomainClass": "Knight"
+        "Knight": {
+            "DomainClass": "Knight",
+            "CardId": 5
         },
-        {
-            "CardName": "Kraken",
-            "DomainClass": "Kraken"
+        "Kraken": {
+            "DomainClass": "Kraken",
+            "CardId": 6
         },
-        {
-            "CardName": "FireElf",
-            "DomainClass": "FireElf"
+        "FireElf": {
+            "DomainClass": "FireElf",
+            "CardId": 7
         },
-        {
-            "CardName": "FlameStrike",
-            "DomainClass": "FlameStrike"
+        "FlameStrike": {
+            "DomainClass": "FlameStrike",
+            "CardId": 8
         },
-        {
-            "CardName": "WaterBlast",
-            "DomainClass": "WaterBlast"
+        "WaterBlast": {
+            "DomainClass": "WaterBlast",
+            "CardId": 9
         },
-        {
-            "CardName": "EarthShatter",
-            "DomainClass": "EarthShatter"
+        "EarthShatter": {
+            "DomainClass": "EarthShatter",
+            "CardId": 10
         },
-        {
-            "CardName": "AirSlice",
-            "DomainClass": "AirSlice"
+        "AirSlice": {
+            "DomainClass": "AirSlice",
+            "CardId": 11
         },
-        {
-            "CardName": "ShadowFog",
-            "DomainClass": "ShadowFog"
+        "ShadowFog": {
+            "DomainClass": "ShadowFog",
+            "CardId": 12
         },
-        {
-            "CardName": "Heal",
-            "DomainClass": "Heal"
+        "Heal": {
+            "DomainClass": "Heal",
+            "CardId": 13
         }
-    ]
+    }
 }

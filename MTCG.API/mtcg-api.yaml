@@ -122,11 +122,19 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Card'
-              minItems: 5
-              maxItems: 5
+              type: object
+              required:
+                - Name
+                - Cards
+              properties:
+                Name:
+                  type: string
+                Cards:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Card'
+                  minItems: 5
+                  maxItems: 5
         required: true
       responses:
         '201':
@@ -441,7 +449,7 @@ components:
           format: uuid
         Name:
           type: string
-          enum: [ WaterGoblin, FireGoblin, RegularGoblin, WaterTroll, FireTroll, RegularTroll, WaterElf, FireElf, RegularElf, WaterSpell, FireSpell, RegularSpell, Knight, Dragon, Ork, Kraken ]
+          enum: [ Goblin, FireElf, WaterBlast, FlameStrike, EarthShatter, AirSlice, Knight, Dragon, Ork, Kraken, Wizard ]
           example: WaterGoblin
         Damage:
           type: number

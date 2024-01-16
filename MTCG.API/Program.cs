@@ -25,9 +25,11 @@ IHost host = Host.CreateDefaultBuilder(args)
                  {
                      services.RegisterUserServices();
                      services.RegisterCardServices();
+                     services.RegisterPackageServices();
                      services.AddSingleton<UserController>();
                      services.AddSingleton<CardsController>();
                      services.AddSingleton<AuthenticatedUserController>();
+                     services.AddSingleton<AdminController>();
                  })
                  .Build();
 
