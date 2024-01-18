@@ -35,11 +35,11 @@ public class PackageController : ControllerBase
         }
         catch (NotEnoughCoinsException)
         {
-            return BadRequest("You do not have enough coins to acquire a package!");
+            return Forbidden("You do not have enough coins to buy a package!");
         }
         catch (NoPackageAvailableException)
         {
-            return BadRequest("There are no packages available at the moment!");
+            return NotFound("There are no packages available for you to buy!");
         }
     }
 

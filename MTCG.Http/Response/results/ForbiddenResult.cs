@@ -3,9 +3,7 @@
 public class ForbiddenResult : StatusCodeResult
 {
 
-    public ForbiddenResult() : base() { }
-
-    public ForbiddenResult(string message) : base(message) { }
+    public ForbiddenResult(string? message) : base(message) { }
 
     protected override int StatusCode => StatusCodes.Status403Forbidden;
 

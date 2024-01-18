@@ -30,6 +30,11 @@ public class ControllerBase
         return new NotFoundResult(message);
     }
 
+    protected ForbiddenResult Forbidden(string? message = default)
+    {
+        return new ForbiddenResult(message);
+    }
+
     protected UnauthorizedResult Unauthorized(string? message = default)
     {
         return new UnauthorizedResult(message);
