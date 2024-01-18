@@ -7,11 +7,14 @@ using MTCG.Persistance.Repositories.users;
 using MTCG.Services.PackageServices.Dto;
 using MTCG.Services.PackageServices.Exceptions;
 using MTCG.Services.PackageServices.ViewModels;
+using MTCG.Services.UserService;
 
 namespace MTCG.Services.PackageServices.Services.Concrete;
 
 public class DefaultPackageService : PackageService
 {
+    const int PACKAGE_PRICE = 5;
+
     private readonly UserRepository _userRepository;
 
     private readonly Dictionary<string, CardMapping> _cardMappings;
@@ -28,17 +31,17 @@ public class DefaultPackageService : PackageService
         _userRepository = userRepository;
     }
 
-    public async ValueTask<CardPackageViewModel> CreatePackageAsync(CardPackageCreationDto cardPackageCreationDto, string createdBy)
+    public async ValueTask<int> CreatePackageAsync(CardPackageCreationDto cardPackageCreationDto, string adminName)
     {
         if (IsDuplicateIdInPackage(cardPackageCreationDto)) throw new DuplicateCardGuidException();
         if (IsUnexistingCardInPackage(cardPackageCreationDto)) throw new UnexistingCardException();
 
-        CardPackage cardPackage = _mapper.Map<CardPackage>(cardPackageCreationDto);
-        cardPackage.CreatedBy = createdBy;
-        cardPackage.CreatedById = (await _userRepository.GetByUserName(createdBy))!.UserId;
-        cardPackage = await _packageRepository.Create(cardPackage);
+        Package package = _mapper.Map<Package>(cardPackageCreationDto);
+        package.CreatedBy = adminName;
+        package.CreatedById = (await _userRepository.GetByUserName(adminName))!.UserId;
+        Package createdPackage = await _packageRepository.Create(package);
 
-        return _mapper.Map<CardPackageViewModel>(cardPackage);
+        return createdPackage.PackageId;
     }
 
     private bool IsDuplicateIdInPackage(CardPackageCreationDto packageViewModel) =>
@@ -46,9 +49,21 @@ public class DefaultPackageService : PackageService
 
     private bool IsUnexistingCardInPackage(CardPackageCreationDto packageViewModel) => packageViewModel.Cards.Any(card => !_cardMappings.ContainsKey(card.Name));
 
-    public async ValueTask<CardPackageViewModel> AcquirePackageAsync(string username)
+    public async ValueTask<CardPackageViewModel> AcquirePackageAsync(string userName)
     {
-        throw new NotImplementedException();
+        User? foundUser = await _userRepository.GetByUserName(userName);
+
+        if (foundUser is null) throw new UserNotFoundException();
+
+        if (foundUser.Coins < PACKAGE_PRICE) throw new NotEnoughCoinsException();
+
+        Package? firstNotAcquiredPackage = await _packageRepository.GetFirstNotAcquiredPackage();
+
+        if (firstNotAcquiredPackage is null) throw new NoPackageAvailableException();
+
+        Package addedPackage = await _packageRepository.AddPackageToUser(foundUser.UserId, firstNotAcquiredPackage, PACKAGE_PRICE);
+
+        return _mapper.Map<CardPackageViewModel>(addedPackage);
     }
 
 }

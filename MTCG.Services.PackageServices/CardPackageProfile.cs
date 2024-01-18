@@ -11,7 +11,7 @@ public class CardPackageProfile : Profile
 
     public CardPackageProfile()
     {
-        CreateMap<CardPackageCreationDto, CardPackage>()
+        CreateMap<CardPackageCreationDto, Package>()
             .ForMember(dest => dest.Cards, opt => opt.MapFrom(src => src.Cards.Select(card => new Card
             {
                 UserCardId = card.UserCardId,
@@ -19,10 +19,9 @@ public class CardPackageProfile : Profile
                 Damage = card.Damage
             })));
 
-        CreateMap<CardPackage, CardPackageViewModel>()
-            .ForMember(dest => dest.Cards, opt => opt.MapFrom(src => src.Cards.Select(card => new CardPackageCreationDto.CardPackageItem
+        CreateMap<Package, CardPackageViewModel>()
+            .ForMember(dest => dest.Cards, opt => opt.MapFrom(src => src.Cards.Select(card => new CardPackageItem
             {
-                UserCardId = card.UserCardId,
                 Name = card.Name,
                 Damage = card.Damage
             })));

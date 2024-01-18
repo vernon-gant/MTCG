@@ -6,8 +6,8 @@ namespace MTCG.Services.PackageServices.Services;
 public interface PackageService
 {
 
-    ValueTask<CardPackageViewModel> CreatePackageAsync(CardPackageCreationDto cardPackageCreationDto, string createdBy);
+    ValueTask<int> CreatePackageAsync(CardPackageCreationDto cardPackageCreationDto, string createdBy);
 
-    ValueTask<CardPackageViewModel> AcquirePackageAsync(string username);
+    ValueTask<CardPackageViewModel> AcquirePackageAsync(string userName);
 
 }

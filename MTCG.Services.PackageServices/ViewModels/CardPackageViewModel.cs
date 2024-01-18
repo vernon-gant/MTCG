@@ -2,9 +2,11 @@
 
 namespace MTCG.Services.PackageServices.ViewModels;
 
-public class CardPackageViewModel : CardPackageCreationDto
+public class CardPackageViewModel
 {
 
-    public int CardPackageId { get; set; }
+    public string Name { get; set; } = "";
+
+    public List<CardPackageItem> Cards { get; set; } = new ();
 
 }

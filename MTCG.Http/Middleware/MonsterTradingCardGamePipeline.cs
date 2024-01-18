@@ -36,7 +36,7 @@ public class MonsterTradingCardGamePipeline : MiddlewarePipeline
         finally
         {
             context.Response.ContentType = DefineContentType(context);
-            context.Response.ContentLength = context.Response.Body?.Length;
+            context.Response.ContentLength = context.Response.Body?.Length ?? 0;
             context.Response.Date = DateTimeOffset.UtcNow;
         }
     }
@@ -45,8 +45,9 @@ public class MonsterTradingCardGamePipeline : MiddlewarePipeline
     {
         string? contentType = context.Response.ContentType;
 
-        if (context.Response.Body == null) return contentType;
+        if (context.Response.Body == null) return null;
 
+        // If it's already set then it is application/json set in EndpointExecutionMiddleware
         if (contentType != null) return contentType;
 
         return "text/plain";

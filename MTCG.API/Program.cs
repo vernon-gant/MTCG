@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 
-using MCTG.middleware;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,9 +25,10 @@ IHost host = Host.CreateDefaultBuilder(args)
                      services.RegisterCardServices();
                      services.RegisterPackageServices();
                      services.AddSingleton<UserController>();
-                     services.AddSingleton<CardsController>();
+                     services.AddSingleton<CardController>();
                      services.AddSingleton<AuthenticatedUserController>();
                      services.AddSingleton<AdminController>();
+                     services.AddSingleton<PackageController>();
                  })
                  .Build();
 

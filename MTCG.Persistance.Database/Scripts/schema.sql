@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS ActiveDecks;
 DROP TABLE IF EXISTS Battles;
 DROP TABLE IF EXISTS Decks;
 DROP TABLE IF EXISTS UserCards;
-DROP TABLE IF EXISTS CardPackageContents;
-DROP TABLE IF EXISTS CardPackages;
+DROP TABLE IF EXISTS PackageContents;
+DROP TABLE IF EXISTS Packages;
 DROP TABLE IF EXISTS Deals;
 DROP TABLE IF EXISTS Cards;
 DROP TABLE IF EXISTS Elements;
@@ -54,7 +54,6 @@ CREATE TABLE UserCards
     UserId     INT                                            NOT NULL,
     CardId     INT                                            NOT NULL,
     Damage     INT CHECK (Damage >= 0) CHECK ( Damage <= 100) NOT NULL,
-    AcquiredOn TIMESTAMP                                      NOT NULL DEFAULT NOW(),
     FOREIGN KEY (UserId) REFERENCES Users (UserId) ON DELETE RESTRICT,
     FOREIGN KEY (CardId) REFERENCES Cards (CardId) ON DELETE RESTRICT
 );
@@ -118,28 +117,28 @@ CREATE TABLE BattleDecks
     FOREIGN KEY (CardFourId) REFERENCES Cards (CardId) ON DELETE RESTRICT
 );
 
-CREATE TABLE CardPackages
+CREATE TABLE Packages
 (
-    CardPackageId SERIAL PRIMARY KEY,
+    PackageId SERIAL PRIMARY KEY,
     Name          VARCHAR(50) NOT NULL,
     CreatedById   INT         NOT NULL,
     CreatedOn     TIMESTAMP   NOT NULL DEFAULT NOW(),
-    BoughtById    INT,
-    BoughtOn      TIMESTAMP,
+    AcquiredById  INT,
+    AcquiredOn    TIMESTAMP,
     FOREIGN KEY (CreatedById) REFERENCES Users (UserId) ON DELETE RESTRICT,
-    FOREIGN KEY (BoughtById) REFERENCES Users (UserId) ON DELETE RESTRICT
+    FOREIGN KEY (AcquiredById) REFERENCES Users (UserId) ON DELETE RESTRICT
 );
 
-CREATE INDEX idx_card_packages_createdby ON CardPackages (CreatedById);
-CREATE INDEX idx_card_packages_boughtby ON CardPackages (BoughtById);
+CREATE INDEX idx_card_packages_createdby ON Packages (CreatedById);
+CREATE INDEX idx_card_packages_acquiredby ON Packages (AcquiredById);
 
-CREATE TABLE CardPackageContents
+CREATE TABLE PackageContents
 (
-    CardPackageId  INT  NOT NULL,
-    AcquiredCardId UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    PackageId  INT  NOT NULL,
+    PackageCardId UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
     CardId         INT  NOT NULL,
     Damage         INT  NOT NULL,
-    PRIMARY KEY (CardPackageId, AcquiredCardId),
+    PRIMARY KEY (PackageId, PackageCardId),
     FOREIGN KEY (CardId) REFERENCES Cards (CardId) ON DELETE RESTRICT
 );
 

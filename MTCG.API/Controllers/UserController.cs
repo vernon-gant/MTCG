@@ -24,7 +24,7 @@ public class UserController : ControllerBase
 
         await _userService.RegisterUserAsync(userDto);
 
-        return Created("users/" + userDto.UserName);
+        return Created("users/" + userDto.UserName, "User created!");
     }
 
     [Post("/sessions")]

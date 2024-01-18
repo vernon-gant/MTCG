@@ -22,5 +22,6 @@
     &lt;TestId&gt;MSTest::02FE6775-20B8-4A2B-A65E-0C74B313DF8D::net7.0::MTCG.Http.Test.TestHttpParser&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=deletedon/@EntryIndexedValue">True</s:Boolean>
 	
 	</wpf:ResourceDictionary>

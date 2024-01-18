@@ -1,11 +1,9 @@
 ﻿using MCTG;
 
 using MTCG.API.attributes;
-using MTCG.Domain;
 using MTCG.Services.PackageServices.Dto;
 using MTCG.Services.PackageServices.Exceptions;
 using MTCG.Services.PackageServices.Services;
-using MTCG.Services.PackageServices.ViewModels;
 
 namespace MTCG.API.Controllers;
 
@@ -22,12 +20,13 @@ public class AdminController : ControllerBase
     }
 
     [Post("/packages")]
-    public async ValueTask<ActionResult> CreatePackage([FromBody] CardPackageCreationDto cardPackageCreationDto,HttpContext context)
+    public async ValueTask<ActionResult> CreatePackage([FromBody] CardPackageCreationDto cardPackageCreationDto, HttpContext context)
     {
         try
         {
-            CardPackageViewModel cardPackageViewModel = await _packageService.CreatePackageAsync(cardPackageCreationDto, context.UserName!);
-            return Created($"/packages/{cardPackageViewModel.CardPackageId}", cardPackageViewModel);
+            int createdPackageId = await _packageService.CreatePackageAsync(cardPackageCreationDto, context.UserName!);
+
+            return Created($"/packages/{createdPackageId}", new { packageId = createdPackageId });
         }
         catch (UnexistingCardException)
         {

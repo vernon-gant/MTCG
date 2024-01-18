@@ -18,7 +18,7 @@ public class AuthenticatedUserController : ControllerBase
     }
 
     [Get("/users/{username}")]
-    public async ValueTask<ActionResult> Get([FromRoute] string userName, HttpContext context)
+    public async ValueTask<ActionResult> GetUserInfo([FromRoute] string userName, HttpContext context)
     {
         try {
             if (IsUnauthorizedAccess(context,userName)) return Unauthorized("You are not allowed to access this resource!");
@@ -31,7 +31,7 @@ public class AuthenticatedUserController : ControllerBase
     }
 
     [Put("/users/{username}")]
-    public async ValueTask<ActionResult> Put([FromRoute] string userName, [FromBody] UserUpdateDto userUpdateDto, HttpContext context)
+    public async ValueTask<ActionResult> UpdateUserInfo([FromRoute] string userName, [FromBody] UserUpdateDto userUpdateDto, HttpContext context)
     {
         try {
             if (IsUnauthorizedAccess(context,userName)) return Unauthorized("You are not allowed to access this resource!");

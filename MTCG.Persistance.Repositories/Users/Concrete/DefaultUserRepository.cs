@@ -23,7 +23,7 @@ public class DefaultUserRepository : AbstractRepository, UserRepository
         {
             await using DbConnection connection = CreateConnection();
             await connection.OpenAsync();
-            User? user = await connection.QuerySingleAsync<User>("SELECT * FROM users WHERE username = @name", new { name });
+            User? user = await connection.QuerySingleAsync<User>("SELECT * FROM users WHERE username = @name AND deletedon IS NULL", new { name });
 
             return user;
         }
@@ -61,8 +61,8 @@ public class DefaultUserRepository : AbstractRepository, UserRepository
             await using DbConnection connection = CreateConnection();
             await connection.OpenAsync();
             await using DbCommand command = connection.CreateCommand();
-            command.CommandText = "UPDATE users SET bio = @bio, image = @image WHERE username = @username";
-            command.AddParameters(new { bio = user.BIO, image = user.Image, username = user.UserName });
+            command.CommandText = "UPDATE users SET name = @name, bio = @bio, image = @image WHERE username = @username";
+            command.AddParameters(new { name = user.Name, bio = user.BIO, image = user.Image, username = user.UserName });
             await command.ExecuteNonQueryAsync();
 
             return connection.QuerySingleAsync<User>("SELECT * FROM users WHERE username = @username", new { username = user.UserName }).Result!;

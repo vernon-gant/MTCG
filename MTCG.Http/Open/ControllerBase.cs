@@ -10,7 +10,7 @@ public class ControllerBase
         return new OkResult(value);
     }
 
-    protected CreatedResult Created(string location, object? value = default)
+    protected CreatedResult Created(string location, object value)
     {
         return new CreatedResult(location, value);
     }

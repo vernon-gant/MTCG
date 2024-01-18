@@ -1,8 +1,8 @@
 ﻿namespace MTCG.Domain;
 
-public class CardPackage
+public class Package
 {
-    public int CardPackageId { get; set; }
+    public int PackageId { get; set; }
 
     public string Name { get; set; } = "";
 

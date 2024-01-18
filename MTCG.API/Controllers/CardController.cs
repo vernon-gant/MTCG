@@ -6,12 +6,12 @@ using MTCG.Services.Cards.cards;
 namespace MTCG.API.Controllers;
 
 [ApiController]
-public class CardsController : ControllerBase
+public class CardController : ControllerBase
 {
 
     private readonly CardsService _cardsService;
 
-    public CardsController(CardsService cardsService)
+    public CardController(CardsService cardsService)
     {
         _cardsService = cardsService;
     }

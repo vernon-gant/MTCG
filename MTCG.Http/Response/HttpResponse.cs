@@ -11,7 +11,7 @@ public class HttpResponse
 
     public string? ContentType { get; set; }
 
-    public int? ContentLength { get; set; }
+    public int ContentLength { get; set; }
 
     public DateTimeOffset? Date { get; set; }
 
@@ -29,14 +29,14 @@ public class HttpResponse
         sb.Append(" ");
         sb.Append(StatusMessage);
         sb.Append("\r\n");
+        sb.Append("Content-Length: ");
+        sb.Append(ContentLength);
+        sb.Append("\r\n");
 
         if (Body != null)
         {
             sb.Append("Content-Type: ");
             sb.Append(ContentType);
-            sb.Append("\r\n");
-            sb.Append("Content-Length: ");
-            sb.Append(ContentLength);
             sb.Append("\r\n");
         }
 
