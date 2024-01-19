@@ -20,6 +20,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.PackageServic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.DeckServices", "MTCG.Services.DeckServices\MTCG.Services.DeckServices.csproj", "{4B5AA978-9229-4DF3-8EF3-CE7CF6517036}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.TradingServices", "MTCG.Services.TradingServices\MTCG.Services.TradingServices.csproj", "{01ACDF80-5C26-476C-9EC6-07601CA11E99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.StatisticsServices", "MTCG.Services.StatisticsServices\MTCG.Services.StatisticsServices.csproj", "{D56E5BEA-E599-41B9-96EC-22E4C6C18989}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.BattleServices", "MTCG.Services.BattleServices\MTCG.Services.BattleServices.csproj", "{FE31618F-00AF-4976-8B22-3626987FA673}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +72,17 @@ Global
 		{4B5AA978-9229-4DF3-8EF3-CE7CF6517036}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B5AA978-9229-4DF3-8EF3-CE7CF6517036}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B5AA978-9229-4DF3-8EF3-CE7CF6517036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01ACDF80-5C26-476C-9EC6-07601CA11E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01ACDF80-5C26-476C-9EC6-07601CA11E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01ACDF80-5C26-476C-9EC6-07601CA11E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01ACDF80-5C26-476C-9EC6-07601CA11E99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D56E5BEA-E599-41B9-96EC-22E4C6C18989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D56E5BEA-E599-41B9-96EC-22E4C6C18989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D56E5BEA-E599-41B9-96EC-22E4C6C18989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D56E5BEA-E599-41B9-96EC-22E4C6C18989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE31618F-00AF-4976-8B22-3626987FA673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE31618F-00AF-4976-8B22-3626987FA673}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE31618F-00AF-4976-8B22-3626987FA673}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE31618F-00AF-4976-8B22-3626987FA673}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -9,6 +9,8 @@ using MTCG.Persistence.Repositories.Decks;
 using MTCG.Persistence.Repositories.Decks.Concrete;
 using MTCG.Persistence.Repositories.Packages;
 using MTCG.Persistence.Repositories.Packages.Concrete;
+using MTCG.Persistence.Repositories.Trading;
+using MTCG.Persistence.Repositories.Trading.Concrete;
 using MTCG.Persistence.Repositories.Users;
 using MTCG.Persistence.Repositories.Users.Concrete;
 
@@ -36,9 +38,10 @@ public static class RepositoriesDefaultsConfigurator
             services.AddSingleton(elementMappings);
 
             services.AddSingleton<UserRepository, DefaultUserRepository>();
-            services.AddSingleton<CardsRepository, DefaultCardRepository>();
+            services.AddSingleton<CardRepository, DefaultCardRepository>();
             services.AddSingleton<PackageRepository, DefaultPackageRepository>();
             services.AddSingleton<DeckRepository, DefaultDeckRepository>();
+            services.AddSingleton<TradingRepository, DefaultTradingRepository>();
         });
 
         return hostBuilder;

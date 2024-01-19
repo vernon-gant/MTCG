@@ -20,6 +20,8 @@
         <ProjectReference Include="..\MTCG.Services.CardServices\MTCG.Services.CardServices.csproj" />
         <ProjectReference Include="..\MTCG.Services.DeckServices\MTCG.Services.DeckServices.csproj" />
         <ProjectReference Include="..\MTCG.Services.PackageServices\MTCG.Services.PackageServices.csproj" />
+        <ProjectReference Include="..\MTCG.Services.StatisticsServices\MTCG.Services.StatisticsServices.csproj" />
+        <ProjectReference Include="..\MTCG.Services.TradingServices\MTCG.Services.TradingServices.csproj" />
         <ProjectReference Include="..\MTCG.Services.UserServices\MTCG.Services.UserServices.csproj" />
     </ItemGroup>
 

@@ -14,12 +14,12 @@ public class DefaultDeckRepository : AbstractRepository, DeckRepository
 
     private readonly ILogger<DefaultDeckRepository> _logger;
 
-    private readonly CardsRepository _cardsRepository;
+    private readonly CardRepository _cardRepository;
 
-    public DefaultDeckRepository(DatabaseConfig databaseConfig, ILogger<DefaultDeckRepository> logger, CardsRepository cardsRepository) : base(databaseConfig)
+    public DefaultDeckRepository(DatabaseConfig databaseConfig, ILogger<DefaultDeckRepository> logger, CardRepository cardRepository) : base(databaseConfig)
     {
         _logger = logger;
-        _cardsRepository = cardsRepository;
+        _cardRepository = cardRepository;
     }
 
     public async ValueTask<List<Deck>> GetUserDecksAsync(int userId)
@@ -191,7 +191,7 @@ public class DefaultDeckRepository : AbstractRepository, DeckRepository
 
         List<Card> cards = (await connection.QueryAsync<Card>(activeDeckCardsSql, new { deckid = deckId })).ToList();
 
-        List<Element> elements = await _cardsRepository.GetCardElementsAsync();
+        List<Element> elements = await _cardRepository.GetCardElementsAsync();
 
         foreach (Card card in cards)
         {

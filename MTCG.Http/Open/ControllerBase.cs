@@ -30,7 +30,7 @@ public class ControllerBase
         return new NotFoundResult(message);
     }
 
-    protected ForbiddenResult Forbidden(string? message = default)
+    protected ForbiddenResult Forbidden(object? message = default)
     {
         return new ForbiddenResult(message);
     }

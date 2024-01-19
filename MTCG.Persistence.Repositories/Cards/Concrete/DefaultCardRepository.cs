@@ -9,7 +9,7 @@ using MTCG.Persistence.Repositories.Cards.Mappings;
 
 namespace MTCG.Persistence.Repositories.Cards.Concrete;
 
-public class DefaultCardRepository : AbstractRepository, CardsRepository
+public class DefaultCardRepository : AbstractRepository, CardRepository
 {
 
     private readonly ILogger<DefaultCardRepository> _logger;

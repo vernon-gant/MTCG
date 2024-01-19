@@ -92,11 +92,15 @@ public class DeckController : ControllerBase
         }
         catch (CardNotInUserStackException e)
         {
-            return BadRequest(new { errorMessage = "Card with these ids are not in your stack!", cardIds = e.CardIds });
+            return Forbidden(new { errorMessage = "Card with these ids are not in your stack!", cardIds = e.CardIds });
         }
         catch (CardAlreadyInDeckException e)
         {
-            return BadRequest(new { errorMessage = "Card with these ids are already in your deck!", cardIds = e.CardIds });
+            return Forbidden(new { errorMessage = "Card with these ids are already in your deck!", cardIds = e.CardIds });
+        }
+        catch (CardAlreadyInTradingDealException e)
+        {
+            return Forbidden(new { errorMessage = "Card with these ids are already in a trading deal!", cardIds = e.CardIds });
         }
     }
 

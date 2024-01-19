@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS PackageContents;
-DROP TABLE IF EXISTS Deals;
+DROP TABLE IF EXISTS TradingDeals;
 DROP TABLE IF EXISTS BattleDeckContents;
 DROP TABLE IF EXISTS BattleDecks;
 DROP TABLE IF EXISTS Battles;
@@ -54,7 +54,7 @@ CREATE TABLE UserCards
     UserCardId UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     UserId     INT                                            NOT NULL,
     CardId     INT                                            NOT NULL,
-    Damage     INT CHECK (Damage >= 0) CHECK ( Damage <= 100) NOT NULL,
+    Damage     INT CHECK (Damage >= 1) CHECK ( Damage <= 100) NOT NULL,
     FOREIGN KEY (UserId) REFERENCES Users (UserId) ON DELETE RESTRICT,
     FOREIGN KEY (CardId) REFERENCES Cards (CardId) ON DELETE RESTRICT
 );
@@ -112,7 +112,7 @@ CREATE TABLE BattleDeckContents
     BattleDeckContentId SERIAL PRIMARY KEY,
     BattleDeckId        INT                                            NOT NULL,
     CardId              INT                                            NOT NULL,
-    Damage              INT CHECK (Damage >= 0) CHECK ( Damage <= 100) NOT NULL,
+    Damage              INT CHECK (Damage >= 1) CHECK ( Damage <= 100) NOT NULL,
     FOREIGN KEY (BattleDeckId) REFERENCES BattleDecks (BattleDeckId) ON DELETE RESTRICT,
     FOREIGN KEY (CardId) REFERENCES Cards (CardId) ON DELETE RESTRICT
 );
@@ -145,20 +145,20 @@ CREATE TABLE PackageContents
     FOREIGN KEY (CardId) REFERENCES Cards (CardId) ON DELETE RESTRICT
 );
 
-CREATE Table Deals
+CREATE Table TradingDeals
 (
-    DealId           SERIAL PRIMARY KEY,
-    OfferingUserId   INT         NOT NULL,
-    OfferingCardId   INT         NOT NULL,
-    RespondingUserId INT,
-    RespondingCardId INT,
-    RequiredCardType VARCHAR(50) NOT NULL,
-    MinimalDamage    INT CHECK ( MinimalDamage >= 0) CHECK ( MinimalDamage <= 100),
+    TradingDealId         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    OfferingUserId        INT         NOT NULL,
+    OfferingUserCardId    UUID        NOT NULL,
+    RespondingUserId      INT,
+    RespondingUserCardId  UUID,
+    RequiredCardType      VARCHAR(50) NOT NULL,
+    RequiredMinimumDamage INT CHECK ( RequiredMinimumDamage >= 1) CHECK ( RequiredMinimumDamage <= 100),
     FOREIGN KEY (OfferingUserId) REFERENCES Users (UserId) ON DELETE RESTRICT,
-    FOREIGN KEY (OfferingCardId) REFERENCES Cards (CardId) ON DELETE RESTRICT,
+    FOREIGN KEY (OfferingUserCardId) REFERENCES UserCards (UserCardId) ON DELETE RESTRICT,
     FOREIGN KEY (RespondingUserId) REFERENCES Users (UserId) ON DELETE RESTRICT,
-    FOREIGN KEY (RespondingCardId) REFERENCES Cards (CardId) ON DELETE RESTRICT
+    FOREIGN KEY (RespondingUserCardId) REFERENCES UserCards (UserCardId) ON DELETE RESTRICT
 );
 
-CREATE INDEX idx_deals_offeringuserid ON Deals (OfferingUserId);
-CREATE INDEX idx_deals_respondinguserid ON Deals (RespondingUserId);
+CREATE INDEX idx_deals_offeringuserid ON TradingDeals (OfferingUserId);
+CREATE INDEX idx_deals_respondinguserid ON TradingDeals (RespondingUserId);

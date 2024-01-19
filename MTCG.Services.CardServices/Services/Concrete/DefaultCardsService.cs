@@ -13,13 +13,13 @@ public class DefaultCardsService : CardsService
 
     private readonly UserRepository _userRepository;
 
-    private readonly CardsRepository _cardsRepository;
+    private readonly CardRepository _cardRepository;
 
     private readonly IMapper _mapper;
 
-    public DefaultCardsService(CardsRepository cardsRepository, UserRepository userRepository, IMapper mapper)
+    public DefaultCardsService(CardRepository cardRepository, UserRepository userRepository, IMapper mapper)
     {
-        _cardsRepository = cardsRepository;
+        _cardRepository = cardRepository;
         _userRepository = userRepository;
         _mapper = mapper;
     }
@@ -30,7 +30,7 @@ public class DefaultCardsService : CardsService
 
         if (foundUser is null) throw new UserNotFoundException();
 
-        List<Card> userCards = await _cardsRepository.GetUserCardsAsync(foundUser.UserId);
+        List<Card> userCards = await _cardRepository.GetUserCardsAsync(foundUser.UserId);
 
         return _mapper.Map<List<UserCardViewModel>>(userCards);
     }

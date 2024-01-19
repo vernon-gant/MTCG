@@ -2,7 +2,7 @@
 
 namespace MTCG.Persistence.Repositories.Cards;
 
-public interface CardsRepository
+public interface CardRepository
 {
 
     ValueTask<List<Card>> GetUserCardsAsync(int userId);
