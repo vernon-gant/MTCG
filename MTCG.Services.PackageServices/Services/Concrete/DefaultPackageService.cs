@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 
 using MTCG.Domain;
-using MTCG.Persistance.Repositories;
-using MTCG.Persistance.Repositories.Packages;
-using MTCG.Persistance.Repositories.users;
+using MTCG.Persistence.Repositories.Cards.Mappings;
+using MTCG.Persistence.Repositories.Packages;
+using MTCG.Persistence.Repositories.Users;
 using MTCG.Services.PackageServices.Dto;
 using MTCG.Services.PackageServices.Exceptions;
 using MTCG.Services.PackageServices.ViewModels;
@@ -13,6 +13,7 @@ namespace MTCG.Services.PackageServices.Services.Concrete;
 
 public class DefaultPackageService : PackageService
 {
+
     const int PACKAGE_PRICE = 5;
 
     private readonly UserRepository _userRepository;

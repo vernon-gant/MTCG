@@ -16,7 +16,7 @@
     <ItemGroup>
       <ProjectReference Include="..\MTCG.Domain\MTCG.Domain.csproj" />
       <ProjectReference Include="..\MTCG.Http\MTCG.Http.csproj" />
-      <ProjectReference Include="..\MTCG.Persistance.Repositories\MTCG.Persistance.Repositories.csproj" />
+      <ProjectReference Include="..\MTCG.Persistence.Repositories\MTCG.Persistence.Repositories.csproj" />
     </ItemGroup>
 
 </Project>

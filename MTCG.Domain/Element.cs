@@ -3,14 +3,12 @@
 public class Element
 {
 
-    private Card _card;
+    public int ElementId { get; set; }
 
-    private readonly SpecialElementAbility _specialElementAbility;
+    private Card? _card;
 
-    public Element(SpecialElementAbility specialElementAbility, Card card)
-    {
-        _specialElementAbility = specialElementAbility;
-        _card = card;
-    }
+    public required string Name { get; set; }
+
+    private readonly SpecialElementAbility? _specialElementAbility;
 
 }

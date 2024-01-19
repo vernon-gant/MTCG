@@ -10,12 +10,12 @@ public class ControllerBase
         return new OkResult(value);
     }
 
-    protected CreatedResult Created(string location, object value)
+    protected CreatedResult Created(string location, object? value = default)
     {
         return new CreatedResult(location, value);
     }
 
-    protected BadRequestResult BadRequest(string? message = default)
+    protected BadRequestResult BadRequest(object? message = default)
     {
         return new BadRequestResult(message);
     }
@@ -38,6 +38,11 @@ public class ControllerBase
     protected UnauthorizedResult Unauthorized(string? message = default)
     {
         return new UnauthorizedResult(message);
+    }
+
+    protected NoContentResult NoContent()
+    {
+        return new NoContentResult();
     }
 
 }

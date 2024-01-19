@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
 using MTCG.Domain;
-using MTCG.Persistance.Repositories.users;
+using MTCG.Persistence.Repositories.Users;
 
 namespace MTCG.Services.UserService;
 

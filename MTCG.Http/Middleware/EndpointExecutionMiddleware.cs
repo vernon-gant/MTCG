@@ -43,8 +43,6 @@ public class EndpointExecutionMiddleware : Middleware
         }
     }
 
-    private bool NeedsValidation(Type type) => !type.IsPrimitive && type != typeof(string);
-
     private void ValidateModel(object model)
     {
         var validationResults = new List<ValidationResult>();

@@ -11,6 +11,8 @@ public class Card
 
     public int Damage { get; set; }
 
-    public Element Element { get; set; }
+    public int ElementId { get; set; }
+
+    public Element? Element { get; set; }
 
 }

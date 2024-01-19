@@ -1,11 +1,14 @@
 ﻿using MCTG;
 
 using MTCG.API.attributes;
-using MTCG.Services.Cards.cards;
+using MTCG.Services.Cards.Services;
+using MTCG.Services.UserService;
+using MTCG.Services.UserService.ViewModels;
 
 namespace MTCG.API.Controllers;
 
 [ApiController]
+[Auth]
 public class CardController : ControllerBase
 {
 
@@ -16,16 +19,21 @@ public class CardController : ControllerBase
         _cardsService = cardsService;
     }
 
-    [Get("/all-cards")]
-    public async ValueTask<ActionResult> GetAllCards()
+    [Get("/cards")]
+    public async ValueTask<ActionResult> GetUserCards(HttpContext context)
     {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            List<UserCardViewModel> userCards = await _cardsService.GetUserCardsAsync(context.UserName!);
 
-    [Get("/cards/{id}")]
-    public ValueTask<ActionResult> GetCardById([FromRoute] int id)
-    {
-        throw new NotImplementedException();
+            if (userCards.Count == 0) return NoContent();
+
+            return Ok(userCards);
+        }
+        catch (UserNotFoundException)
+        {
+            return NotFound("User with this name does not exist!");
+        }
     }
 
 }

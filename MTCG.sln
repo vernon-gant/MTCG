@@ -2,9 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Http", "MTCG.Http\MTCG.Http.csproj", "{DC9C6312-6D48-4AF5-A3D7-97E37B729DC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Persistance.Database", "MTCG.Persistance.Database\MTCG.Persistance.Database.csproj", "{8E575E9A-F13A-4C2A-87F4-9DE077EDC3B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Persistence.Database", "MTCG.Persistence.Database\MTCG.Persistence.Database.csproj", "{8E575E9A-F13A-4C2A-87F4-9DE077EDC3B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Persistance.Repositories", "MTCG.Persistance.Repositories\MTCG.Persistance.Repositories.csproj", "{C343276F-2F86-4FBB-B8A2-726E048064B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Persistence.Repositories", "MTCG.Persistence.Repositories\MTCG.Persistence.Repositories.csproj", "{C343276F-2F86-4FBB-B8A2-726E048064B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.API", "MTCG.API\MTCG.API.csproj", "{F9DF4D3A-7458-49BA-AA32-C9C11CE4FEA6}"
 EndProject
@@ -17,6 +17,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.CardServices", "MTCG.Services.CardServices\MTCG.Services.CardServices.csproj", "{3CC2AB83-4F09-453D-A5EB-3CD12EF74DF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.PackageServices", "MTCG.Services.PackageServices\MTCG.Services.PackageServices.csproj", "{CD9F8EC6-9F2E-475B-B2A0-1F5D5C8ABB56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.DeckServices", "MTCG.Services.DeckServices\MTCG.Services.DeckServices.csproj", "{4B5AA978-9229-4DF3-8EF3-CE7CF6517036}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,5 +62,9 @@ Global
 		{CD9F8EC6-9F2E-475B-B2A0-1F5D5C8ABB56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD9F8EC6-9F2E-475B-B2A0-1F5D5C8ABB56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD9F8EC6-9F2E-475B-B2A0-1F5D5C8ABB56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B5AA978-9229-4DF3-8EF3-CE7CF6517036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B5AA978-9229-4DF3-8EF3-CE7CF6517036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B5AA978-9229-4DF3-8EF3-CE7CF6517036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B5AA978-9229-4DF3-8EF3-CE7CF6517036}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

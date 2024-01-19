@@ -7,7 +7,8 @@ using Microsoft.Extensions.Hosting;
 using MTCG.API;
 using MTCG.API.Controllers;
 using MTCG.Persistance.Database;
-using MTCG.Persistance.Repositories;
+using MTCG.Persistence.Repositories;
+using MTCG.Services.DeckServices;
 using MTCG.Services.UserService;
 
 IHost host = Host.CreateDefaultBuilder(args)
@@ -24,11 +25,13 @@ IHost host = Host.CreateDefaultBuilder(args)
                      services.RegisterUserServices();
                      services.RegisterCardServices();
                      services.RegisterPackageServices();
+                     services.RegisterDeckServices();
                      services.AddSingleton<UserController>();
                      services.AddSingleton<CardController>();
                      services.AddSingleton<AuthenticatedUserController>();
                      services.AddSingleton<AdminController>();
                      services.AddSingleton<PackageController>();
+                     services.AddSingleton<DeckController>();
                  })
                  .Build();
 

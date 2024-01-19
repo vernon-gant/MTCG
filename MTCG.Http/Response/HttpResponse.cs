@@ -29,6 +29,15 @@ public class HttpResponse
         sb.Append(" ");
         sb.Append(StatusMessage);
         sb.Append("\r\n");
+
+        sb.Append("Date: ");
+        sb.Append(Date);
+        sb.Append("\r\n");
+
+        sb.Append("Server: ");
+        sb.Append(Server);
+        sb.Append("\r\n");
+
         sb.Append("Content-Length: ");
         sb.Append(ContentLength);
         sb.Append("\r\n");
@@ -40,13 +49,6 @@ public class HttpResponse
             sb.Append("\r\n");
         }
 
-        sb.Append("Date: ");
-        sb.Append(Date);
-        sb.Append("\r\n");
-        sb.Append("Server: ");
-        sb.Append(Server);
-        sb.Append("\r\n");
-
         if (Location != null)
         {
             sb.Append("Location: ");
@@ -54,13 +56,15 @@ public class HttpResponse
             sb.Append("\r\n");
         }
 
+        sb.Append("\r\n");
+
         if (Body != null)
         {
-            sb.Append("\r\n");
             sb.Append(Body);
         }
 
         return sb.ToString();
     }
+
 
 }
