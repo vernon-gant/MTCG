@@ -1,8 +1,3 @@
 ﻿namespace MTCG.Services.DeckServices.Exceptions;
 
-public class DeckNotOwnedException : Exception
-{
-
-    
-
-}
+public class DeckNotOwnedException : Exception { }

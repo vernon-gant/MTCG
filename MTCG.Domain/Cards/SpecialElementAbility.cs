@@ -1,4 +1,6 @@
-﻿namespace MTCG.Domain;
+﻿using MTCG.Domain.Elements;
+
+namespace MTCG.Domain.Cards;
 
 public interface SpecialElementAbility
 {

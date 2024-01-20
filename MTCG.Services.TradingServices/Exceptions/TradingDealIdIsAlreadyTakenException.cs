@@ -1,8 +1,3 @@
 ﻿namespace MTCG.Services.TradingServices.Exceptions;
 
-public class TradingDealIdIsAlreadyTakenException : Exception
-{
-
-    
-
-}
+public class TradingDealIdIsAlreadyTakenException : Exception { }

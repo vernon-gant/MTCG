@@ -44,9 +44,9 @@ public class AuthorizationMiddleware : Middleware
 
     private bool IsValidToken(JwtSecurityToken token)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_userSecrets.JWTSecret));
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_userSecrets.JWTSecret));
 
-        var validationParameters = new TokenValidationParameters
+        TokenValidationParameters validationParameters = new TokenValidationParameters
         {
             ValidateLifetime = true,
             ValidateAudience = false,
@@ -57,7 +57,7 @@ public class AuthorizationMiddleware : Middleware
 
         try
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityTokenHandler tokenHandler = new ();
             tokenHandler.ValidateToken(token.RawData, validationParameters, out SecurityToken validatedToken);
 
             return IsValidTokenPayload(token);

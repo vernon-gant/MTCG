@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MTCG.Domain\MTCG.Domain.csproj" />
-      <ProjectReference Include="..\MTCG.Services.CardServices\MTCG.Services.CardServices.csproj" />
+        <ProjectReference Include="..\MTCG.Domain\MTCG.Domain.csproj"/>
+        <ProjectReference Include="..\MTCG.Services.CardServices\MTCG.Services.CardServices.csproj"/>
     </ItemGroup>
 
 </Project>

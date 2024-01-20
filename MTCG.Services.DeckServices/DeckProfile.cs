@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 
 using MTCG.Domain;
+using MTCG.Domain.Cards;
 using MTCG.Services.DeckServices.Dto;
 using MTCG.Services.DeckServices.ViewModels;
-using MTCG.Services.UserService.ViewModels;
 
 namespace MTCG.Services.DeckServices;
 

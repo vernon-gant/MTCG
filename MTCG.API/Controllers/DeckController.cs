@@ -39,7 +39,7 @@ public class DeckController : ControllerBase
     }
 
     [Get("/decks/{deckid}")]
-    public async ValueTask<ActionResult > GetUserDeckById([FromRoute] int deckId, HttpContext context)
+    public async ValueTask<ActionResult> GetUserDeckById([FromRoute] int deckId, HttpContext context)
     {
         try
         {
@@ -116,7 +116,7 @@ public class DeckController : ControllerBase
         {
             return NotFound("User with this name does not exist!");
         }
-        catch(DeckNotFoundException)
+        catch (DeckNotFoundException)
         {
             return NotFound("Deck with this id does not exist!");
         }

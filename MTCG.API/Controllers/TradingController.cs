@@ -94,6 +94,14 @@ public class TradingController : ControllerBase
         {
             return Forbidden("You can't trade a card that you don't own.");
         }
+        catch (RequiredTypeDoesNotMatchException)
+        {
+            return Conflict("The required type does not match the card type.");
+        }
+        catch (RequiredDamageNotReachedException)
+        {
+            return Conflict("The required damage is not reached.");
+        }
     }
 
     [Delete("/{id}")]

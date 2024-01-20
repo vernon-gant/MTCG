@@ -1,8 +1,3 @@
 ﻿namespace MTCG.Services.TradingServices.Exceptions;
 
-public class CardInDeckException : Exception
-{
-
-    
-
-}
+public class CardInDeckException : Exception { }

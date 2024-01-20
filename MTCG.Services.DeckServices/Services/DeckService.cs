@@ -1,6 +1,5 @@
 ﻿using MTCG.Services.DeckServices.Dto;
 using MTCG.Services.DeckServices.ViewModels;
-using MTCG.Services.UserService.ViewModels;
 
 namespace MTCG.Services.DeckServices.Services;
 

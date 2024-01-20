@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 
 using MTCG.Domain;
+using MTCG.Domain.Cards;
 using MTCG.Persistence.Repositories.Cards;
 using MTCG.Persistence.Repositories.Decks;
 using MTCG.Persistence.Repositories.Trading;
 using MTCG.Persistence.Repositories.Users;
+using MTCG.Services.Cards.Services;
 using MTCG.Services.TradingServices.DTO;
 using MTCG.Services.TradingServices.Exceptions;
 using MTCG.Services.TradingServices.ViewModels;
@@ -15,9 +17,7 @@ namespace MTCG.Services.TradingServices.Services.Concrete;
 public class DefaultTradingService : TradingService
 {
 
-    private readonly UserRepository _userRepository;
-
-    private readonly TradingRepository _tradingRepository;
+    private readonly CardMapperService _cardMapperService;
 
     private readonly CardRepository _cardRepository;
 
@@ -25,13 +25,19 @@ public class DefaultTradingService : TradingService
 
     private readonly IMapper _mapper;
 
-    public DefaultTradingService(TradingRepository tradingRepository, IMapper mapper, UserRepository userRepository, CardRepository cardRepository, DeckRepository deckRepository)
+    private readonly TradingRepository _tradingRepository;
+
+    private readonly UserRepository _userRepository;
+
+    public DefaultTradingService(TradingRepository tradingRepository, IMapper mapper, UserRepository userRepository, CardRepository cardRepository, DeckRepository deckRepository,
+        CardMapperService cardMapperService)
     {
         _tradingRepository = tradingRepository;
         _mapper = mapper;
         _userRepository = userRepository;
         _cardRepository = cardRepository;
         _deckRepository = deckRepository;
+        _cardMapperService = cardMapperService;
     }
 
     public async ValueTask<List<TradingDealViewModel>> GetAvailableTradingDealsAsync()
@@ -84,6 +90,16 @@ public class DefaultTradingService : TradingService
 
         if (tradingDeal.OfferingUserId == foundUser.UserId) throw new SelfDealException();
 
+        List<Card> respondingUserCards = await _cardRepository.GetUserCardsAsync(foundUser.UserId);
+
+        respondingUserCards = await _cardMapperService.MapCardsAsync(respondingUserCards);
+
+        Card respondingUserCard = respondingUserCards.First(card => card.UserCardId == respondingUserCardId);
+
+        if (!RequiredTypeMatches(tradingDeal.RequiredCardType, respondingUserCard)) throw new RequiredTypeDoesNotMatchException();
+
+        if (respondingUserCard.Damage < tradingDeal.RequiredMinimumDamage) throw new RequiredDamageNotReachedException();
+
         tradingDeal.RespondingUserId = foundUser.UserId;
         tradingDeal.RespondingUserCardId = respondingUserCardId;
 
@@ -117,6 +133,19 @@ public class DefaultTradingService : TradingService
         }
 
         return false;
+    }
+
+    private bool RequiredTypeMatches(string requiredType, Card card)
+    {
+        switch (requiredType)
+        {
+            case "monster":
+                return card is MonsterCard;
+            case "spell":
+                return card is SpellCard;
+            default:
+                return false;
+        }
     }
 
     private async ValueTask<bool> IsCardOwnedByUser(Guid cardId, int userId)

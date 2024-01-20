@@ -1,8 +1,3 @@
 ﻿namespace MTCG.Services.TradingServices.Exceptions;
 
-public class TradingDealNotOwnedException : Exception
-{
-
-    
-
-}
+public class TradingDealNotOwnedException : Exception { }

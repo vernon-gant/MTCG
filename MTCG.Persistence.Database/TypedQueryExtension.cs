@@ -58,7 +58,7 @@ public static class TypedQueryExtension
         {
             string dbColumnName = reader.GetName(i).ToLower();
 
-            if (propertyMap.TryGetValue(dbColumnName, out var property) && reader.IsDBNull(i) == false && !IsClass(property))
+            if (propertyMap.TryGetValue(dbColumnName, out PropertyInfo? property) && reader.IsDBNull(i) == false && !IsClass(property))
             {
                 object value = Convert.ChangeType(reader.GetValue(i), property.PropertyType);
                 property.SetValue(entity, value);

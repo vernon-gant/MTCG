@@ -11,13 +11,13 @@ public class RoutingMiddleware : Middleware
 
     protected override Task Handle(HttpContext context)
     {
-        var controllerTypes = AppDomain.CurrentDomain
+        IEnumerable<Type> controllerTypes = AppDomain.CurrentDomain
                                        .GetAssemblies()
                                        .SelectMany(assembly => assembly.GetTypes()
                                                                        .Where(type => type.IsClass && !type.IsAbstract &&
                                                                                       type.GetCustomAttribute<ApiControllerAttribute>() != null));
 
-        foreach (var controllerType in controllerTypes)
+        foreach (Type controllerType in controllerTypes)
         {
             MethodInfo? method = controllerType
                                  .GetMethods(BindingFlags.Public | BindingFlags.Instance)

@@ -3,6 +3,7 @@
 using Microsoft.Extensions.Logging;
 
 using MTCG.Domain;
+using MTCG.Domain.Cards;
 using MTCG.Persistance.Database;
 using MTCG.Persistence.Database;
 using MTCG.Persistence.Repositories.Cards.Mappings;

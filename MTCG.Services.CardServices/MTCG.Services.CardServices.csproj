@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MTCG.Persistence.Repositories\MTCG.Persistence.Repositories.csproj" />
-      <ProjectReference Include="..\MTCG.Services.UserServices\MTCG.Services.UserServices.csproj" />
+        <ProjectReference Include="..\MTCG.Persistence.Repositories\MTCG.Persistence.Repositories.csproj"/>
+        <ProjectReference Include="..\MTCG.Services.UserServices\MTCG.Services.UserServices.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -12,6 +12,7 @@ public static class DeckServicesRegistrationExtension
     {
         services.AddAutoMapper(typeof(DeckServicesRegistrationExtension));
         services.AddSingleton<DeckService, DefaultDeckService>();
+
         return services;
     }
 

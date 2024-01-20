@@ -43,7 +43,7 @@ public class TestTcpListener
         CancellationTokenSource cancellationTokenSource = new ();
         Task listeningTask = _tcpListener.StartAsync(cancellationTokenSource.Token);
 
-        using var client = new TcpClient();
+        using TcpClient client = new TcpClient();
 
         await client.ConnectAsync(IPAddress.Parse("127.0.0.1"), 10001);
         NetworkStream stream = client.GetStream();
@@ -74,7 +74,7 @@ public class TestTcpListener
         CancellationTokenSource cancellationTokenSource = new ();
         Task listeningTask = _tcpListener.StartAsync(cancellationTokenSource.Token);
 
-        using var client = new TcpClient();
+        using TcpClient client = new TcpClient();
 
         await client.ConnectAsync(IPAddress.Parse("127.0.0.1"), 10001);
         NetworkStream stream = client.GetStream();

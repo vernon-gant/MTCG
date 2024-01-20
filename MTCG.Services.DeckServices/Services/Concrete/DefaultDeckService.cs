@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 
 using MTCG.Domain;
+using MTCG.Domain.Cards;
 using MTCG.Persistence.Repositories.Cards;
 using MTCG.Persistence.Repositories.Decks;
 using MTCG.Persistence.Repositories.Trading;
@@ -9,22 +10,21 @@ using MTCG.Services.DeckServices.Dto;
 using MTCG.Services.DeckServices.Exceptions;
 using MTCG.Services.DeckServices.ViewModels;
 using MTCG.Services.UserService;
-using MTCG.Services.UserService.ViewModels;
 
 namespace MTCG.Services.DeckServices.Services.Concrete;
 
 public class DefaultDeckService : DeckService
 {
 
-    private readonly IMapper _mapper;
-
-    private readonly UserRepository _userRepository;
-
     private readonly CardRepository _cardRepository;
 
     private readonly DeckRepository _deckRepository;
 
+    private readonly IMapper _mapper;
+
     private readonly TradingRepository _tradingRepository;
+
+    private readonly UserRepository _userRepository;
 
     public DefaultDeckService(UserRepository userRepository, DeckRepository deckRepository, IMapper mapper, CardRepository cardRepository, TradingRepository tradingRepository)
     {
@@ -88,34 +88,6 @@ public class DefaultDeckService : DeckService
         return _mapper.Map<DeckViewModel>(addedDeck);
     }
 
-    private async Task ValidateAddDeckInvariants(DeckCreationDTO deckCreationDto, User user)
-    {
-        List<Card> userCards = await _cardRepository.GetUserCardsAsync(user.UserId);
-
-        List<Guid> notInUserStackCardIds =
-            deckCreationDto.ProvidedUserCardIds.Where(providedUserCardId => userCards.All(userCard => userCard.UserCardId != providedUserCardId)).ToList();
-
-        if (notInUserStackCardIds.Count > 0) throw new CardNotInUserStackException(notInUserStackCardIds);
-
-        List<Deck> userDecks = await _deckRepository.GetUserDecksAsync(user.UserId);
-
-        List<Guid> cardsAlreadyInDeck = deckCreationDto.ProvidedUserCardIds
-                                                       .Where(providedUserCardId =>
-                                                                  userDecks.Any(userDeck => userDeck.Cards.Any(userDeckCard => userDeckCard.UserCardId == providedUserCardId)))
-                                                       .ToList();
-
-        if (cardsAlreadyInDeck.Count > 0) throw new CardAlreadyInDeckException(cardsAlreadyInDeck);
-
-        List<TradingDeal> tradingDeals = await _tradingRepository.GetAvailableAsync();
-
-        List<Guid> cardsAlreadyInDeal = deckCreationDto.ProvidedUserCardIds
-                                                      .Where(providedUserCardId =>
-                                                                 tradingDeals.Any(tradingDeal => tradingDeal.OfferingUserCardId == providedUserCardId))
-                                                      .ToList();
-
-        if (cardsAlreadyInDeal.Count > 0) throw new CardAlreadyInTradingDealException(cardsAlreadyInDeal);
-    }
-
     public async ValueTask<DeckViewModel> SetUserActiveDeckAsync(string userName, int deckId)
     {
         User? user = await _userRepository.GetByUserName(userName);
@@ -150,6 +122,34 @@ public class DefaultDeckService : DeckService
         if (activeDeck is null) throw new ActiveDeckNotConfiguredException();
 
         await _deckRepository.UnsetActiveDeckAsync(user.UserId);
+    }
+
+    private async Task ValidateAddDeckInvariants(DeckCreationDTO deckCreationDto, User user)
+    {
+        List<Card> userCards = await _cardRepository.GetUserCardsAsync(user.UserId);
+
+        List<Guid> notInUserStackCardIds =
+            deckCreationDto.ProvidedUserCardIds.Where(providedUserCardId => userCards.All(userCard => userCard.UserCardId != providedUserCardId)).ToList();
+
+        if (notInUserStackCardIds.Count > 0) throw new CardNotInUserStackException(notInUserStackCardIds);
+
+        List<Deck> userDecks = await _deckRepository.GetUserDecksAsync(user.UserId);
+
+        List<Guid> cardsAlreadyInDeck = deckCreationDto.ProvidedUserCardIds
+                                                .Where(providedUserCardId =>
+                                                           userDecks.Any(userDeck => userDeck.Cards.Any(userDeckCard => userDeckCard.UserCardId == providedUserCardId)))
+                                                .ToList();
+
+        if (cardsAlreadyInDeck.Count > 0) throw new CardAlreadyInDeckException(cardsAlreadyInDeck);
+
+        List<TradingDeal> tradingDeals = await _tradingRepository.GetAvailableAsync();
+
+        List<Guid> cardsAlreadyInDeal = deckCreationDto.ProvidedUserCardIds
+                                                .Where(providedUserCardId =>
+                                                           tradingDeals.Any(tradingDeal => tradingDeal.OfferingUserCardId == providedUserCardId))
+                                                .ToList();
+
+        if (cardsAlreadyInDeal.Count > 0) throw new CardAlreadyInTradingDealException(cardsAlreadyInDeal);
     }
 
 }

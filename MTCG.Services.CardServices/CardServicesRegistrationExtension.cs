@@ -12,6 +12,8 @@ public static class CardServicesRegistrationExtension
     {
         services.AddAutoMapper(typeof(CardServicesRegistrationExtension));
         services.AddSingleton<CardsService, DefaultCardsService>();
+        services.AddSingleton<CardMapperService, DefaultCardMapperService>();
+
         return services;
     }
 

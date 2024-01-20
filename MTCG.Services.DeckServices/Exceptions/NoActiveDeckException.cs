@@ -1,8 +1,3 @@
 ﻿namespace MTCG.Services.UserService.Exceptions;
 
-public class NoActiveDeckException : Exception
-{
-
-    
-
-}
+public class NoActiveDeckException : Exception { }

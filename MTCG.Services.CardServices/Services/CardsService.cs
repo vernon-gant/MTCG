@@ -1,5 +1,4 @@
-﻿using MTCG.Domain;
-using MTCG.Services.UserService.ViewModels;
+﻿using MTCG.Services.UserService.ViewModels;
 
 namespace MTCG.Services.Cards.Services;
 

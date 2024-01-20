@@ -1,8 +1,3 @@
 ﻿namespace MTCG.Services.PackageServices.Exceptions;
 
-public class UnexistingCardException : Exception
-{
-
-    
-
-}
+public class UnexistingCardException : Exception { }

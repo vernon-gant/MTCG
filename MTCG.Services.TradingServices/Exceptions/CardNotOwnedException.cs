@@ -1,8 +1,3 @@
 ﻿namespace MTCG.Services.TradingServices.Exceptions;
 
-public class CardNotOwnedException : Exception
-{
-
-    
-
-}
+public class CardNotOwnedException : Exception { }

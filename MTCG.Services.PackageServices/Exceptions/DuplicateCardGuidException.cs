@@ -1,8 +1,3 @@
 ﻿namespace MTCG.Services.PackageServices.Exceptions;
 
-public class DuplicateCardGuidException : Exception
-{
-
-    
-
-}
+public class DuplicateCardGuidException : Exception { }

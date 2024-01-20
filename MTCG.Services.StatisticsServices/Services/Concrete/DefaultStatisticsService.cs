@@ -11,11 +11,11 @@ namespace MTCG.Services.StatisticsServices.Services.Concrete;
 public class DefaultStatisticsService : StatisticsService
 {
 
-    private readonly UserRepository _userRepository;
+    private readonly IMapper _mapper;
 
     private readonly StatisticsRepository _statisticsRepository;
 
-    private readonly IMapper _mapper;
+    private readonly UserRepository _userRepository;
 
     public DefaultStatisticsService(UserRepository userRepository, StatisticsRepository statisticsRepository, IMapper mapper)
     {

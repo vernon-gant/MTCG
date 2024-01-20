@@ -1,7 +1,6 @@
 ﻿using MCTG;
 
 using MTCG.API.attributes;
-using MTCG.Domain;
 using MTCG.Services.UserService;
 
 namespace MTCG.API.Controllers;

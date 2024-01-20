@@ -1,7 +1,10 @@
-﻿namespace MTCG.Domain;
+﻿using MTCG.Domain.Cards;
+
+namespace MTCG.Domain;
 
 public class Deck
 {
+
     public int DeckId { get; set; }
 
     public int UserId { get; set; }
@@ -10,6 +13,6 @@ public class Deck
 
     public bool IsActive { get; set; }
 
-    public List<Card> Cards { get; set; } = new();
+    public List<Card> Cards { get; set; } = new ();
 
 }

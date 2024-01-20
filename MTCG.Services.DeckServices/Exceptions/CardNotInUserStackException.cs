@@ -3,11 +3,11 @@
 public class CardNotInUserStackException : Exception
 {
 
-    public List<Guid> CardIds { get; }
-
     public CardNotInUserStackException(List<Guid> cardIds)
     {
         CardIds = cardIds;
     }
+
+    public List<Guid> CardIds { get; }
 
 }

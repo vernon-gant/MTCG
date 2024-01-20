@@ -1,8 +1,3 @@
 ﻿namespace MTCG.Services.PackageServices.Exceptions;
 
-public class NoPackageAvailableException : Exception
-{
-
-    
-
-}
+public class NoPackageAvailableException : Exception { }

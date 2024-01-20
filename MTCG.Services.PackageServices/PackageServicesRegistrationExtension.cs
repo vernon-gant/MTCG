@@ -12,6 +12,7 @@ public static class PackageServicesRegistrationExtension
     {
         services.AddAutoMapper(typeof(PackageServicesRegistrationExtension));
         services.AddScoped<PackageService, DefaultPackageService>();
+
         return services;
     }
 

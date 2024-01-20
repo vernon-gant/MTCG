@@ -1,8 +1,3 @@
 ﻿namespace MTCG.Services.PackageServices.Exceptions;
 
-public class NotEnoughCoinsException : Exception
-{
-
-    
-
-}
+public class NotEnoughCoinsException : Exception { }

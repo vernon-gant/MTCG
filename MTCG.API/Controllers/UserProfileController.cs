@@ -12,9 +12,9 @@ namespace MTCG.API.Controllers;
 public class UserProfileController : ControllerBase
 {
 
-    private readonly UserProfileService _userProfileService;
-
     private readonly StatisticsService _statisticsService;
+
+    private readonly UserProfileService _userProfileService;
 
     public UserProfileController(UserProfileService userProfileService, StatisticsService statisticsService)
     {
@@ -25,8 +25,10 @@ public class UserProfileController : ControllerBase
     [Get("/users/{username}")]
     public async ValueTask<ActionResult> GetInfo([FromRoute] string userName, HttpContext context)
     {
-        try {
-            if (IsUnauthorizedAccess(context,userName)) return Unauthorized("You are not allowed to access this resource!");
+        try
+        {
+            if (IsUnauthorizedAccess(context, userName)) return Unauthorized("You are not allowed to access this resource!");
+
             return Ok(await _userProfileService.GetUserAsync(userName));
         }
         catch (UserNotFoundException)
@@ -38,8 +40,10 @@ public class UserProfileController : ControllerBase
     [Put("/users/{username}")]
     public async ValueTask<ActionResult> UpdateInfo([FromRoute] string userName, [FromBody] UserUpdateDto userUpdateDto, HttpContext context)
     {
-        try {
-            if (IsUnauthorizedAccess(context,userName)) return Unauthorized("You are not allowed to access this resource!");
+        try
+        {
+            if (IsUnauthorizedAccess(context, userName)) return Unauthorized("You are not allowed to access this resource!");
+
             return Ok(await _userProfileService.UpdateUserAsync(userName, userUpdateDto));
         }
         catch (UserNotFoundException)

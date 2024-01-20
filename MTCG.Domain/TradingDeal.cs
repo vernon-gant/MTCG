@@ -1,4 +1,4 @@
-﻿using System;
+﻿using MTCG.Domain.Cards;
 
 namespace MTCG.Domain;
 

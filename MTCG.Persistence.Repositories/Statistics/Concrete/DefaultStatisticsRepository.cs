@@ -11,7 +11,7 @@ namespace MTCG.Persistence.Repositories.Statistics.Concrete;
 public class DefaultStatisticsRepository : AbstractRepository, StatisticsRepository
 {
 
-    private ILogger<DefaultStatisticsRepository> _logger;
+    private readonly ILogger<DefaultStatisticsRepository> _logger;
 
     public DefaultStatisticsRepository(DatabaseConfig databaseConfig, ILogger<DefaultStatisticsRepository> logger) : base(databaseConfig)
     {

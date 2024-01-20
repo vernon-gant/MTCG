@@ -1,4 +1,5 @@
-﻿using MTCG.Domain;
+﻿using MTCG.Domain.Cards;
+using MTCG.Domain.Elements;
 
 namespace MTCG.Persistence.Repositories.Cards;
 

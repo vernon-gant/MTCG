@@ -12,6 +12,7 @@ public static class TradingServicesRegistrationExtension
     {
         services.AddAutoMapper(typeof(TradingServicesRegistrationExtension));
         services.AddScoped<TradingService, DefaultTradingService>();
+
         return services;
     }
 

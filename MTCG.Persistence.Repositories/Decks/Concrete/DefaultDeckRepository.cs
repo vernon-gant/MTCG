@@ -3,6 +3,8 @@
 using Microsoft.Extensions.Logging;
 
 using MTCG.Domain;
+using MTCG.Domain.Cards;
+using MTCG.Domain.Elements;
 using MTCG.Persistance.Database;
 using MTCG.Persistence.Database;
 using MTCG.Persistence.Repositories.Cards;
@@ -12,9 +14,9 @@ namespace MTCG.Persistence.Repositories.Decks.Concrete;
 public class DefaultDeckRepository : AbstractRepository, DeckRepository
 {
 
-    private readonly ILogger<DefaultDeckRepository> _logger;
-
     private readonly CardRepository _cardRepository;
+
+    private readonly ILogger<DefaultDeckRepository> _logger;
 
     public DefaultDeckRepository(DatabaseConfig databaseConfig, ILogger<DefaultDeckRepository> logger, CardRepository cardRepository) : base(databaseConfig)
     {

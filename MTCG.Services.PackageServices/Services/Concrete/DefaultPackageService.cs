@@ -14,15 +14,15 @@ namespace MTCG.Services.PackageServices.Services.Concrete;
 public class DefaultPackageService : PackageService
 {
 
-    const int PACKAGE_PRICE = 5;
-
-    private readonly UserRepository _userRepository;
+    private const int PACKAGE_PRICE = 5;
 
     private readonly Dictionary<string, CardMapping> _cardMappings;
 
     private readonly IMapper _mapper;
 
     private readonly PackageRepository _packageRepository;
+
+    private readonly UserRepository _userRepository;
 
     public DefaultPackageService(PackageRepository packageRepository, IMapper mapper, Dictionary<string, CardMapping> cardMappings, UserRepository userRepository)
     {
@@ -45,11 +45,6 @@ public class DefaultPackageService : PackageService
         return createdPackage.PackageId;
     }
 
-    private bool IsDuplicateIdInPackage(CardPackageCreationDto packageViewModel) =>
-        packageViewModel.Cards.Select(card => card.UserCardId).Distinct().Count() != packageViewModel.Cards.Count;
-
-    private bool IsUnexistingCardInPackage(CardPackageCreationDto packageViewModel) => packageViewModel.Cards.Any(card => !_cardMappings.ContainsKey(card.Name));
-
     public async ValueTask<CardPackageViewModel> AcquirePackageAsync(string userName)
     {
         User? foundUser = await _userRepository.GetByUserName(userName);
@@ -66,5 +61,10 @@ public class DefaultPackageService : PackageService
 
         return _mapper.Map<CardPackageViewModel>(addedPackage);
     }
+
+    private bool IsDuplicateIdInPackage(CardPackageCreationDto packageViewModel) =>
+        packageViewModel.Cards.Select(card => card.UserCardId).Distinct().Count() != packageViewModel.Cards.Count;
+
+    private bool IsUnexistingCardInPackage(CardPackageCreationDto packageViewModel) => packageViewModel.Cards.Any(card => !_cardMappings.ContainsKey(card.Name));
 
 }

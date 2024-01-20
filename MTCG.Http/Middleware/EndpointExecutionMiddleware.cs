@@ -45,7 +45,7 @@ public class EndpointExecutionMiddleware : Middleware
 
     private void ValidateModel(object model)
     {
-        var validationResults = new List<ValidationResult>();
+        List<ValidationResult> validationResults = new ();
         ValidateModelRecursive(model, validationResults, new HashSet<object>());
 
         if (!validationResults.Any()) return;
@@ -65,18 +65,18 @@ public class EndpointExecutionMiddleware : Middleware
 
         validatedObjects.Add(model);
 
-        var validationContext = new ValidationContext(model, serviceProvider: null, items: null);
+        ValidationContext validationContext = new(model, serviceProvider: null, items: null);
         Validator.TryValidateObject(model, validationContext, validationResults, true);
 
-        foreach (var property in model.GetType().GetProperties())
+        foreach (PropertyInfo property in model.GetType().GetProperties())
         {
             if (property.PropertyType == typeof(string) || !property.PropertyType.IsClass) continue;
 
-            var propertyValue = property.GetValue(model);
+            object? propertyValue = property.GetValue(model);
 
             if (propertyValue is IEnumerable enumerable)
             {
-                foreach (var item in enumerable) ValidateModelRecursive(item, validationResults, validatedObjects);
+                foreach (object? item in enumerable) ValidateModelRecursive(item, validationResults, validatedObjects);
             }
             else ValidateModelRecursive(propertyValue, validationResults, validatedObjects);
         }
@@ -88,7 +88,7 @@ public class EndpointExecutionMiddleware : Middleware
 
         object[] parameters = new object[context.Endpoint.GetParameters().Length];
 
-        foreach (var parameterInfo in context.Endpoint.GetParameters())
+        foreach (ParameterInfo parameterInfo in context.Endpoint.GetParameters())
         {
             if (parameterInfo.ParameterType == typeof(HttpContext)) parameters[parameterInfo.Position] = context;
             else if (IsBoundFromRoute(parameterInfo)) parameters[parameterInfo.Position] = BindFromRoute(parameterInfo, context);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 
 using MTCG.Domain;
+using MTCG.Domain.Cards;
 using MTCG.Persistence.Repositories.Cards;
 using MTCG.Persistence.Repositories.Users;
 using MTCG.Services.UserService;
@@ -11,11 +12,11 @@ namespace MTCG.Services.Cards.Services.Concrete;
 public class DefaultCardsService : CardsService
 {
 
-    private readonly UserRepository _userRepository;
-
     private readonly CardRepository _cardRepository;
 
     private readonly IMapper _mapper;
+
+    private readonly UserRepository _userRepository;
 
     public DefaultCardsService(CardRepository cardRepository, UserRepository userRepository, IMapper mapper)
     {

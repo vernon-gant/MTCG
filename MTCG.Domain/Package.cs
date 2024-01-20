@@ -1,7 +1,10 @@
-﻿namespace MTCG.Domain;
+﻿using MTCG.Domain.Cards;
+
+namespace MTCG.Domain;
 
 public class Package
 {
+
     public int PackageId { get; set; }
 
     public string Name { get; set; } = "";

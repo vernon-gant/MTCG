@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 
 using MTCG.Domain;
+using MTCG.Domain.Cards;
 using MTCG.Services.PackageServices.Dto;
 using MTCG.Services.PackageServices.ViewModels;
 
