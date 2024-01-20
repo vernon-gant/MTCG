@@ -22,6 +22,7 @@ public class CardPackageProfile : Profile
         CreateMap<Package, CardPackageViewModel>()
             .ForMember(dest => dest.Cards, opt => opt.MapFrom(src => src.Cards.Select(card => new CardPackageItem
             {
+                UserCardId = card.UserCardId,
                 Name = card.Name,
                 Damage = card.Damage
             })));

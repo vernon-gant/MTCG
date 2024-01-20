@@ -64,6 +64,49 @@ public class DefaultTradingService : TradingService
         await _tradingRepository.CreateAsync(tradingDeal);
     }
 
+    public async Task CarryOutTradingDealAsync(string userName, Guid tradingDealId, Guid respondingUserCardId)
+    {
+        User? foundUser = await _userRepository.GetByUserName(userName);
+
+        if (foundUser == null) throw new UserNotFoundException();
+
+        if (!await IsCardOwnedByUser(respondingUserCardId, foundUser.UserId)) throw new CardNotOwnedException();
+
+        if (await IsCardInDeck(respondingUserCardId, foundUser.UserId)) throw new CardInDeckException();
+
+        List<TradingDeal> tradingDeals = await _tradingRepository.GetAvailableAsync();
+
+        if (IsCardInDeal(respondingUserCardId, tradingDeals)) throw new CardAlreadyInDealException();
+
+        TradingDeal? tradingDeal = tradingDeals.FirstOrDefault(tradingDeal => tradingDeal.TradingDealId == tradingDealId);
+
+        if (tradingDeal == null) throw new TradingDealNotFoundException();
+
+        if (tradingDeal.OfferingUserId == foundUser.UserId) throw new SelfDealException();
+
+        tradingDeal.RespondingUserId = foundUser.UserId;
+        tradingDeal.RespondingUserCardId = respondingUserCardId;
+
+        await _tradingRepository.CarryOutAsync(tradingDeal);
+    }
+
+    public async Task DeleteTradingDealAsync(string userName, Guid tradingDealId)
+    {
+        User? foundUser = await _userRepository.GetByUserName(userName);
+
+        if (foundUser == null) throw new UserNotFoundException();
+
+        List<TradingDeal> tradingDeals = await _tradingRepository.GetAvailableAsync();
+
+        TradingDeal? requiredTradingDeal = tradingDeals.FirstOrDefault(tradingDeal => tradingDeal.TradingDealId == tradingDealId);
+
+        if (requiredTradingDeal == null) throw new TradingDealNotFoundException();
+
+        if (requiredTradingDeal.OfferingUserId != foundUser.UserId) throw new TradingDealNotOwnedException();
+
+        await _tradingRepository.DeleteAsync(tradingDealId);
+    }
+
     private async ValueTask<bool> IsCardInDeck(Guid cardId, int userId)
     {
         List<Deck> userDecks = await _deckRepository.GetUserDecksAsync(userId);

@@ -6,7 +6,6 @@ using MTCG.Services.DeckServices.Exceptions;
 using MTCG.Services.DeckServices.Services;
 using MTCG.Services.DeckServices.ViewModels;
 using MTCG.Services.UserService;
-using MTCG.Services.UserService.ViewModels;
 
 namespace MTCG.API.Controllers;
 

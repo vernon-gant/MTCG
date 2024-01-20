@@ -1,8 +1,6 @@
-﻿using MTCG.Domain;
+﻿namespace MTCG.Services.UserService.Services;
 
-namespace MTCG.Services.UserService;
-
-public interface AuthenticatedUserService
+public interface UserProfileService
 {
     ValueTask<UserDetailsViewModel> GetUserAsync(string username);
 

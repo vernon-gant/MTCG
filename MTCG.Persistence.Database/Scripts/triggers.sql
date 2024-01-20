@@ -3,11 +3,11 @@ CREATE OR REPLACE FUNCTION update_attacker_elo()
 $$
 BEGIN
     UPDATE Users
-    SET ELO = ELO + NEW.playeroneelochange
+    SET ELO = GREATEST(ELO + NEW.playeroneelochange, 1000)
     WHERE UserId = NEW.playeroneid;
 
     UPDATE Users
-    SET ELO = ELO + NEW.playertwoelochange
+    SET ELO = GREATEST(ELO + NEW.playertwoelochange, 1000)
     WHERE UserId = NEW.playertwoid;
 
     RETURN NEW;

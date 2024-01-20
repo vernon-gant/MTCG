@@ -7,6 +7,6 @@ public interface CardRepository
 
     ValueTask<List<Card>> GetUserCardsAsync(int userId);
 
-    ValueTask<List<Element>> GetCardElementsAsync();
+    ValueTask<List<Element>> GetElementsAsync();
 
 }

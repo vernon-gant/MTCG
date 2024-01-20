@@ -34,7 +34,7 @@ public class DefaultCardRepository : AbstractRepository, CardRepository
             await using DbConnection connection = CreateConnection();
             await connection.OpenAsync();
 
-            List<Element> elements = await GetCardElementsAsync();
+            List<Element> elements = await GetElementsAsync();
 
             string cardsSql = "SELECT cards.cardid, usercards.usercardid, cards.name, usercards.damage, cards.elementid " +
                               "FROM usercards " +
@@ -58,7 +58,7 @@ public class DefaultCardRepository : AbstractRepository, CardRepository
         }
     }
 
-    public async ValueTask<List<Element>> GetCardElementsAsync()
+    public async ValueTask<List<Element>> GetElementsAsync()
     {
         try
         {

@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS Users;
 
 DROP TYPE IF EXISTS battle_result;
 
-CREATE TYPE battle_result AS ENUM ('AttackerWin', 'DefenderWin', 'Draw');
+CREATE TYPE battle_result AS ENUM ('PlayerOneWin', 'PlayerTwoWin', 'Draw');
 
 CREATE TABLE Elements
 (

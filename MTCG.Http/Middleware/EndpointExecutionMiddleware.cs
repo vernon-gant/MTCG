@@ -106,11 +106,13 @@ public class EndpointExecutionMiddleware : Middleware
 
     private object BindFromRoute(ParameterInfo parameterInfo, HttpContext context)
     {
-        object value = context.RouteParameters[parameterInfo.Name!.ToLower()];
+        string value = context.RouteParameters[parameterInfo.Name!.ToLower()];
 
-        if (int.TryParse(value.ToString(), out int intValue)) return intValue;
+        if (int.TryParse(value, out int intValue)) return intValue;
 
-        return value;
+        if (parameterInfo.ParameterType == typeof(Guid)) return Guid.Parse(value);
+
+        return Convert.ChangeType(value, parameterInfo.ParameterType);
     }
 
     private object BindFromBody(ParameterInfo parameterInfo, HttpContext context)

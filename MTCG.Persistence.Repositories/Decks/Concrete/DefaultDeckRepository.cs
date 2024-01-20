@@ -47,7 +47,7 @@ public class DefaultDeckRepository : AbstractRepository, DeckRepository
         }
     }
 
-    public async ValueTask<Deck?> GetDeckByIdAsync(int deckId)
+    public async ValueTask<Deck?> GetByIdAsync(int deckId)
     {
         try
         {
@@ -95,7 +95,7 @@ public class DefaultDeckRepository : AbstractRepository, DeckRepository
         }
     }
 
-    public async ValueTask<Deck> AddUserDeckAsync(Deck deckToAdd)
+    public async ValueTask<Deck> AddDeckAsync(Deck deckToAdd)
     {
         try
         {
@@ -111,7 +111,7 @@ public class DefaultDeckRepository : AbstractRepository, DeckRepository
 
             await transaction.CommitAsync();
 
-            Deck? addedDeck = await GetDeckByIdAsync(deckEntry.DeckId);
+            Deck? addedDeck = await GetByIdAsync(deckEntry.DeckId);
 
             return addedDeck!;
         }
@@ -123,7 +123,7 @@ public class DefaultDeckRepository : AbstractRepository, DeckRepository
         }
     }
 
-    public async Task SetUserActiveDeckAsync(int deckId)
+    public async Task SetActiveDeckAsync(int deckId)
     {
         try
         {
@@ -144,7 +144,7 @@ public class DefaultDeckRepository : AbstractRepository, DeckRepository
         }
     }
 
-    public async Task UnsetUserActiveDeckAsync(int userId)
+    public async Task UnsetActiveDeckAsync(int userId)
     {
         try
         {
@@ -191,7 +191,7 @@ public class DefaultDeckRepository : AbstractRepository, DeckRepository
 
         List<Card> cards = (await connection.QueryAsync<Card>(activeDeckCardsSql, new { deckid = deckId })).ToList();
 
-        List<Element> elements = await _cardRepository.GetCardElementsAsync();
+        List<Element> elements = await _cardRepository.GetElementsAsync();
 
         foreach (Card card in cards)
         {

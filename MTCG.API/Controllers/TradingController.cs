@@ -47,6 +47,10 @@ public class TradingController : ControllerBase
         {
             return Forbidden("You can't trade a card that is in your deck.");
         }
+        catch (CardAlreadyInDealException)
+        {
+            return Conflict("You can't trade a card that is already in a deal.");
+        }
         catch (CardNotOwnedException)
         {
             return Forbidden("You can't trade a card that you don't own.");
@@ -58,15 +62,57 @@ public class TradingController : ControllerBase
     }
 
     [Post("/{id}")]
-    public async ValueTask<ActionResult> CarryOutTradingDeal([FromRoute] Guid id, HttpContext httpContext)
+    public async ValueTask<ActionResult> CarryOutTradingDeal([FromRoute] Guid id, [FromBody] TradingDealCarryOutDTO tradingDealCarryOutDto, HttpContext httpContext)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _tradingService.CarryOutTradingDealAsync(httpContext.UserName!, id, tradingDealCarryOutDto.RespondingUserCardId);
+
+            return Ok();
+        }
+        catch (UserCardNotFoundException)
+        {
+            return NotFound("You do not have the card you want to trade.");
+        }
+        catch (TradingDealNotFoundException)
+        {
+            return NotFound("The trading deal you want to carry out does not exist.");
+        }
+        catch (CardAlreadyInDealException)
+        {
+            return Conflict("You can't trade a card that is already in a deal.");
+        }
+        catch (SelfDealException)
+        {
+            return Conflict("You can't trade with yourself.");
+        }
+        catch (CardInDeckException)
+        {
+            return Forbidden("You can't trade a card that is in your deck.");
+        }
+        catch (CardNotOwnedException)
+        {
+            return Forbidden("You can't trade a card that you don't own.");
+        }
     }
 
     [Delete("/{id}")]
     public async ValueTask<ActionResult> DeleteTradingDeal([FromRoute] Guid id, HttpContext httpContext)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _tradingService.DeleteTradingDealAsync(httpContext.UserName!, id);
+
+            return Ok();
+        }
+        catch (TradingDealNotFoundException)
+        {
+            return NotFound("The trading deal you want to delete does not exist.");
+        }
+        catch (TradingDealNotOwnedException)
+        {
+            return Forbidden("You can't delete a trading deal that you don't own.");
+        }
     }
 
 }

@@ -12,6 +12,6 @@ public class CardPackageCreationDto
     [Required]
     [MinLength(5)]
     [MaxLength(5)]
-    public List<CardPackageItemWithId> Cards { get; set; } = new ();
+    public List<CardPackageItem> Cards { get; set; } = new ();
 
 }

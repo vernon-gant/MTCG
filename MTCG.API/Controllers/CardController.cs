@@ -28,7 +28,7 @@ public class CardController : ControllerBase
 
             if (userCards.Count == 0) return NoContent();
 
-            return Ok(userCards);
+            return Ok(new { cards = userCards });
         }
         catch (UserNotFoundException)
         {

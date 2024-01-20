@@ -11,4 +11,8 @@ public interface TradingRepository
 
     Task CreateAsync(TradingDeal tradingDeal);
 
+    Task CarryOutAsync(TradingDeal tradingDeal);
+
+    Task DeleteAsync(Guid tradingDealId);
+
 }

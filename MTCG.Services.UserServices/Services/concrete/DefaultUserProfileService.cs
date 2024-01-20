@@ -3,15 +3,15 @@
 using MTCG.Domain;
 using MTCG.Persistence.Repositories.Users;
 
-namespace MTCG.Services.UserService;
+namespace MTCG.Services.UserService.Services.concrete;
 
-public class DefaultAuthenticatedUserService : AuthenticatedUserService
+public class DefaultUserProfileService : UserProfileService
 {
     private readonly UserRepository _userRepository;
 
     private readonly IMapper _mapper;
 
-    public DefaultAuthenticatedUserService(IMapper mapper, UserRepository userRepository)
+    public DefaultUserProfileService(IMapper mapper, UserRepository userRepository)
     {
         _mapper = mapper;
         _userRepository = userRepository;

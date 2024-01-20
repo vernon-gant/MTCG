@@ -41,7 +41,7 @@ public class DefaultDeckService : DeckService
 
         if (user is null) throw new UserNotFoundException();
 
-        Deck? deck = await _deckRepository.GetDeckByIdAsync(deckId);
+        Deck? deck = await _deckRepository.GetByIdAsync(deckId);
 
         if (deck is null) return null;
 
@@ -83,7 +83,7 @@ public class DefaultDeckService : DeckService
         Deck deck = _mapper.Map<Deck>(deckCreationDto);
         deck.UserId = user.UserId;
 
-        Deck addedDeck = await _deckRepository.AddUserDeckAsync(deck);
+        Deck addedDeck = await _deckRepository.AddDeckAsync(deck);
 
         return _mapper.Map<DeckViewModel>(addedDeck);
     }
@@ -126,13 +126,13 @@ public class DefaultDeckService : DeckService
 
         if (activeDeck is not null) throw new ActiveDeckAlreadyConfiguredException();
 
-        Deck? deck = await _deckRepository.GetDeckByIdAsync(deckId);
+        Deck? deck = await _deckRepository.GetByIdAsync(deckId);
 
         if (deck is null) throw new DeckNotFoundException();
 
         if (deck.UserId != user.UserId) throw new DeckNotOwnedException();
 
-        await _deckRepository.SetUserActiveDeckAsync(deckId);
+        await _deckRepository.SetActiveDeckAsync(deckId);
 
         deck.IsActive = true;
 
@@ -149,7 +149,7 @@ public class DefaultDeckService : DeckService
 
         if (activeDeck is null) throw new ActiveDeckNotConfiguredException();
 
-        await _deckRepository.UnsetUserActiveDeckAsync(user.UserId);
+        await _deckRepository.UnsetActiveDeckAsync(user.UserId);
     }
 
 }

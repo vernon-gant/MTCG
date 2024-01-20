@@ -32,7 +32,7 @@ IHost host = Host.CreateDefaultBuilder(args)
                      services.RegisterStatisticsServices();
                      services.AddSingleton<UserController>();
                      services.AddSingleton<CardController>();
-                     services.AddSingleton<AuthenticatedUserController>();
+                     services.AddSingleton<UserProfileController>();
                      services.AddSingleton<AdminController>();
                      services.AddSingleton<PackageController>();
                      services.AddSingleton<DeckController>();

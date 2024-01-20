@@ -15,7 +15,12 @@
     <ItemGroup>
       <Folder Include="DTO\" />
       <Folder Include="Exceptions\" />
-      <Folder Include="ViewModels\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MTCG.Domain\MTCG.Domain.csproj" />
+      <ProjectReference Include="..\MTCG.Persistence.Repositories\MTCG.Persistence.Repositories.csproj" />
+      <ProjectReference Include="..\MTCG.Services.UserServices\MTCG.Services.UserServices.csproj" />
     </ItemGroup>
 
 </Project>

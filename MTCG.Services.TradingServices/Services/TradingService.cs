@@ -10,4 +10,8 @@ public interface TradingService
 
     Task CreateTradingDealAsync(TradingDealCreationDTO tradingDealCreationDTO, string userName);
 
+    Task CarryOutTradingDealAsync(string userName, Guid tradingDealId, Guid respondingUserCardId);
+
+    Task DeleteTradingDealAsync(string userName, Guid tradingDealId);
+
 }
