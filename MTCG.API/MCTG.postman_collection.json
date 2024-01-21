@@ -1,0 +1,2213 @@
+{
+	"info": {
+		"_postman_id": "c48df294-44e9-4a53-8db1-1cb0133ce759",
+		"name": "MCTG",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28948622"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const requestBody = JSON.parse(pm.request.body)\r",
+									"pm.environment.set(\"userName\",requestBody.username)\r",
+									"pm.environment.set(\"userPassword\",requestBody.password)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{$randomFirstName}}-{{$randomInt}}-{{$randomLastName}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Schema is valid\", function () {\r",
+									"  var schema = {\r",
+									"    type: \"object\",\r",
+									"    properties: {\r",
+									"      token: {\r",
+									"        type: \"string\"\r",
+									"      }\r",
+									"    },\r",
+									"    required: [\"token\"],\r",
+									"  };\r",
+									"\r",
+									"  var response = pm.response.json();\r",
+									"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has content type of application/json\", function () {\r",
+									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"userToken\",pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userName}}\",\r\n    \"password\": \"{{userPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/sessions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - Name, BIO, and Image\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.name).to.exist;\r",
+									"    pm.expect(responseData.bio).to.exist;\r",
+									"    pm.expect(responseData.image).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"All fields in the response are empty strings\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    for (const key in responseData) {\r",
+									"        pm.expect(responseData[key]).to.be.a('string').and.to.be.empty;\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{userName}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{userName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - Name, BIO, and Image\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"\r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData).to.have.property('name');\r",
+									"  pm.expect(responseData).to.have.property('bio');\r",
+									"  pm.expect(responseData).to.have.property('image');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Name field in the response corresponds to the name field in the request\", function () {\r",
+									"    const requestData = JSON.parse(pm.request.body)\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.name).to.equal(requestData.name);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Bio field in the response corresponds to the bio field in the request\", function () {\r",
+									"    const requestData = JSON.parse(pm.request.body)\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.bio).to.eql(requestData.bio);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Image field in the response corresponds to the image field in the request\", function () {\r",
+									"    const requestData = JSON.parse(pm.request.body)\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.image).to.eql(requestData.image);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"bio\": \"{{$randomPhrase}}\",\r\n    \"image\": \"{{$randomAlphaNumeric}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{userName}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{userName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"adminToken\",pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{adminUserName}}\",\r\n    \"password\": \"{{adminPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/sessions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user data with admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has the required fields - Name, BIO, and Image\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object')\r",
+									"});\r",
+									"\r",
+									"pm.test(\"All fields in the response are non empty strings\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    for (const key in responseData) {\r",
+									"        pm.expect(responseData[key]).to.be.a('string').and.not.to.be.empty;\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{userName}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{userName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user with admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - Name, BIO, and Image\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"\r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData).to.have.property('name');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Name field in the response corresponds to the name field in the request\", function () {\r",
+									"    const requestData = JSON.parse(pm.request.body)\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.name).to.equal(requestData.name);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Bio field in the response corresponds to the bio field in the request\", function () {\r",
+									"    const requestData = JSON.parse(pm.request.body)\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.bio).to.eql(requestData.bio);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Image field in the response corresponds to the image field in the request\", function () {\r",
+									"    const requestData = JSON.parse(pm.request.body)\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.image).to.eql(requestData.image);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"bio\": \"{{$randomPhrase}}\",\r\n    \"image\": \"{{$randomAlphaNumeric}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{userName}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{userName}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Packages",
+			"item": [
+				{
+					"name": "Create package",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has the required field - packageId\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  pm.expect(responseData).to.have.property('packageId');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"PackageId is a non-negative integer\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.packageId).to.be.a('number');\r",
+									"  pm.expect(responseData.packageId).to.be.at.least(0);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomNoun}}\",\r\n  \"cards\": [\r\n    {\r\n      \"id\": \"{{$guid}}\",\r\n      \"name\": \"Wizard\",\r\n      \"damage\": 34\r\n    },\r\n    {\r\n      \"id\": \"{{$guid}}\",\r\n      \"name\": \"FireElf\",\r\n      \"damage\": 22\r\n    },\r\n    {\r\n      \"id\": \"{{$guid}}\",\r\n      \"name\": \"WaterBlast\",\r\n      \"damage\": 55\r\n    },\r\n    {\r\n      \"id\": \"{{$guid}}\",\r\n      \"name\": \"FlameStrike\",\r\n      \"damage\": 65\r\n    },\r\n    {\r\n      \"id\": \"{{$guid}}\",\r\n      \"name\": \"EarthShatter\",\r\n      \"damage\": 15\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/packages",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"packages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Acquire a card package",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Name of the package is not empty\", function () {\r",
+									"  pm.expect(responseData.name).to.exist.and.to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Cards array is present and each card has id, name and damage set\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.cards).to.be.an('array').and.to.have.lengthOf(5);\r",
+									"    \r",
+									"    responseData.cards.forEach(function(card) {\r",
+									"        pm.expect(card).to.have.property('id').to.be.a('string').and.not.to.be.empty;\r",
+									"        pm.expect(card).to.have.property('name').to.be.a('string').and.not.to.be.empty;\r",
+									"        pm.expect(card).to.have.property('damage').to.be.a('number');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/transactions/packages",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"transactions",
+								"packages"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cards/Decks",
+			"item": [
+				{
+					"name": "Get cards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const cards = pm.response.json().cards;\r",
+									"\r",
+									"pm.test(\"Response has valid 'cards' array with required fields for each card\", function () {\r",
+									"    pm.expect(cards).to.be.an('array').and.to.have.lengthOf(5);\r",
+									"\r",
+									"    cards.forEach(function(card) {\r",
+									"        pm.expect(card).to.have.property('id').that.is.not.empty;\r",
+									"        pm.expect(card).to.have.property('name').that.is.a('string').and.is.not.empty;\r",
+									"        pm.expect(card).to.have.property('damage').that.is.a('number').and.is.at.least(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"const deckCardIds = []\r",
+									"for(i = 0; i < 4; i++) {\r",
+									"    deckCardIds[i] = cards[i].id\r",
+									"}\r",
+									"pm.environment.set(\"deckCardIds\",JSON.stringify(deckCardIds))\r",
+									"pm.environment.set(\"tradingCardId\",cards[4].id)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add deck",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate deckId, description, and isActive fields in the response\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.exist.and.to.be.a('number').and.to.be.above(0);\r",
+									"    pm.expect(responseData.description).to.exist.and.to.be.a('string').and.to.not.be.empty;\r",
+									"    pm.expect(responseData.isActive).to.exist.and.to.be.a('boolean').and.to.be.false;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Sorted cards arrays from request and response are identical\", function () {\r",
+									"    const requestCardIds = JSON.parse(pm.request.body).cardIds.sort();\r",
+									"\r",
+									"    pm.expect(responseData.cards).to.be.an('array').and.to.have.lengthOf(requestCardIds.length);\r",
+									"\r",
+									"    const responseCardIds = responseData.cards.map(card => card.id).sort();\r",
+									"\r",
+									"    pm.expect(responseCardIds).to.eql(requestCardIds);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"deckId\", responseData.id);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\" : \"{{$randomWord}}\",\r\n    \"cardIds\" : {{deckCardIds}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/decks",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"decks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all decks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Decks array is present and contains the expected number of elements\", function () {\r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.decks).to.exist.and.to.be.an('array');\r",
+									"  pm.expect(responseData.decks).to.have.lengthOf(1);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Added deck is present\", function () {    \r",
+									"    const deckId = responseData.decks[0].id\r",
+									"    pm.expect(deckId).to.eql(pm.environment.get(\"deckId\"))\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/decks",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"decks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get deck by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate deckId, description, and isActive fields in the response\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.exist.and.to.be.a('number').and.to.eql(pm.environment.get(\"deckId\"))\r",
+									"    pm.expect(responseData.description).to.exist.and.to.be.a('string').and.to.not.be.empty;\r",
+									"    pm.expect(responseData.isActive).to.exist.and.to.be.a('boolean').and.to.be.false;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Cards array is present and has expected number of elements\", function () {\r",
+									"    pm.expect(responseData).to.have.property('cards').that.is.an('array').and.to.have.lengthOf(4)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each card in the cards array has properties id, name, and damage\", function () {\r",
+									"    responseData.cards.forEach((card) => {\r",
+									"        pm.expect(card).to.have.property('id').that.is.a('string').and.to.not.be.empty;\r",
+									"        pm.expect(card).to.have.property('name').that.is.a('string').and.to.not.be.empty;\r",
+									"        pm.expect(card).to.have.property('damage').that.is.a('number');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/decks/{{deckId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"decks",
+								"{{deckId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get active deck",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {\r",
+									"  pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/active-deck",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"active-deck"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set active deck",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate cards, deckId, description, and isActive fields in the response\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.exist.and.to.be.a('number').and.to.eql(pm.environment.get(\"deckId\"))\r",
+									"    pm.expect(responseData.description).to.exist.and.to.be.a('string').and.to.not.be.empty;\r",
+									"    pm.expect(responseData.isActive).to.exist.and.to.be.a('boolean').and.to.be.true;\r",
+									"    pm.expect(responseData.cards).to.exist.and.to.be.an('array').and.to.have.lengthOf(4);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each card in the cards array has properties id, name, and damage\", function () {\r",
+									"    responseData.cards.forEach((card) => {\r",
+									"        pm.expect(card).to.have.property('id').that.is.a('string').and.to.not.be.empty;\r",
+									"        pm.expect(card).to.have.property('name').that.is.a('string').and.to.not.be.empty;\r",
+									"        pm.expect(card).to.have.property('damage').that.is.a('number');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/active-deck/{{deckId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"active-deck",
+								"{{deckId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete active deck",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/active-deck",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"active-deck"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tradings",
+			"item": [
+				{
+					"name": "Carry out a trading deal",
+					"item": [
+						{
+							"name": "Register second user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const requestBody = JSON.parse(pm.request.body)\r",
+											"pm.environment.set(\"secondUserName\",requestBody.username)\r",
+											"pm.environment.set(\"secondUserPassword\",requestBody.password)"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"{{$randomFirstName}}-{{$randomInt}}-{{$randomLastName}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login second user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Schema is valid\", function () {\r",
+											"  var schema = {\r",
+											"    type: \"object\",\r",
+											"    properties: {\r",
+											"      token: {\r",
+											"        type: \"string\"\r",
+											"      }\r",
+											"    },\r",
+											"    required: [\"token\"],\r",
+											"  };\r",
+											"\r",
+											"  var response = pm.response.json();\r",
+											"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has content type of application/json\", function () {\r",
+											"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"pm.environment.set(\"secondUserToken\",pm.response.json().token)"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"{{secondUserName}}\",\r\n    \"password\": \"{{secondUserPassword}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/sessions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"sessions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create second package",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Response has the required field - packageId\", function () {\r",
+											"  pm.expect(responseData).to.have.property('packageId');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"PackageId is a non-negative integer\", function () {\r",
+											"  pm.expect(responseData.packageId).to.be.a('number');\r",
+											"  pm.expect(responseData.packageId).to.be.at.least(0);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type is application/json\", function () {\r",
+											"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"{{$randomNoun}}\",\r\n  \"cards\": [\r\n    {\r\n      \"id\": \"{{$guid}}\",\r\n      \"name\": \"Wizard\",\r\n      \"damage\": 34\r\n    },\r\n    {\r\n      \"id\": \"{{$guid}}\",\r\n      \"name\": \"FireElf\",\r\n      \"damage\": 22\r\n    },\r\n    {\r\n      \"id\": \"{{$guid}}\",\r\n      \"name\": \"WaterBlast\",\r\n      \"damage\": 55\r\n    },\r\n    {\r\n      \"id\": \"{{$guid}}\",\r\n      \"name\": \"FlameStrike\",\r\n      \"damage\": 65\r\n    },\r\n    {\r\n      \"id\": \"{{$guid}}\",\r\n      \"name\": \"EarthShatter\",\r\n      \"damage\": 15\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/packages",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"packages"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Acquire a card package for second user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json();\r",
+											"\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Name of the package is not empty\", function () {\r",
+											"  pm.expect(responseData.name).to.exist.and.to.not.be.empty;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Each card has a name and damage set\", function () {\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.cards).to.be.an('array');\r",
+											"    \r",
+											"    responseData.cards.forEach(function(card) {\r",
+											"        pm.expect(card).to.have.property('id').to.be.a('string').and.not.to.be.empty;\r",
+											"        pm.expect(card).to.have.property('name').to.be.a('string').and.not.to.be.empty;\r",
+											"        pm.expect(card).to.have.property('damage').to.be.a('number');\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Cards array is present and contains 5 elements\", function () {    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.cards).to.exist.and.to.be.an('array');\r",
+											"    pm.expect(responseData.cards).to.have.lengthOf(5);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"const firstCardId = responseData.cards[0].id;\r",
+											"pm.environment.set(\"respondingCardId\", firstCardId);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{secondUserToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/transactions/packages",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"transactions",
+										"packages"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Carry out a trading deal",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{secondUserToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cardId\" : \"{{respondingCardId}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tradings/{{tradingDealId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tradings",
+										"{{tradingDealId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get cards of second user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const cards = pm.response.json().cards;\r",
+											"\r",
+											"pm.test(\"Response has valid 'cards' array with required fields for each card\", function () {\r",
+											"    pm.expect(cards).to.be.an('array').and.to.have.lengthOf(5);\r",
+											"\r",
+											"    cards.forEach(function(card) {\r",
+											"        pm.expect(card).to.have.property('id').that.is.not.empty;\r",
+											"        pm.expect(card).to.have.property('name').that.is.a('string').and.is.not.empty;\r",
+											"        pm.expect(card).to.have.property('damage').that.is.a('number').and.is.at.least(0);\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Traded card is in stack\", function () {\r",
+											"    const tradingCardId = pm.environment.get(\"tradingCardId\");\r",
+											"    const hasMatchingCard = cards.some(function(card) {\r",
+											"        return card.id === tradingCardId;\r",
+											"    });\r",
+											"    pm.expect(hasMatchingCard).to.be.true;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{secondUserToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/cards",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"cards"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get cards of first user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const cards = pm.response.json().cards;\r",
+											"\r",
+											"pm.test(\"Response has valid 'cards' array with required fields for each card\", function () {\r",
+											"    pm.expect(cards).to.be.an('array').and.to.have.lengthOf(5);\r",
+											"\r",
+											"    cards.forEach(function(card) {\r",
+											"        pm.expect(card).to.have.property('id').that.is.not.empty;\r",
+											"        pm.expect(card).to.have.property('name').that.is.a('string').and.is.not.empty;\r",
+											"        pm.expect(card).to.have.property('damage').that.is.a('number').and.is.at.least(0);\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Traded card is in stack\", function () {\r",
+											"    const tradingCardId = pm.environment.get(\"respondingCardId\");\r",
+											"    const hasMatchingCard = cards.some(function(card) {\r",
+											"        return card.id === tradingCardId;\r",
+											"    });\r",
+											"    pm.expect(hasMatchingCard).to.be.true;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/cards",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"cards"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete a trading deal",
+					"item": [
+						{
+							"name": "Create a trading deal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"tradingDealId\",JSON.parse(pm.request.body).id)"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"{{$guid}}\",\r\n    \"cardToTradeId\": \"{{respondingCardId}}\",\r\n    \"type\": \"monster\",\r\n    \"minimumDamage\": 15\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tradings",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tradings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a trading deal",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/tradings/{{tradingDealId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tradings",
+										"{{tradingDealId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create a trading deal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"tradingDealId\",JSON.parse(pm.request.body).id)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{$guid}}\",\r\n    \"cardToTradeId\": \"{{tradingCardId}}\",\r\n    \"type\": \"monster\",\r\n    \"minimumDamage\": 15\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tradings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tradings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get available deals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response content type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"tradingDeals is an array and each deal has valid, non-empty fields\", function () {\r",
+									"    pm.expect(responseData.tradingDeals).to.be.an('array');\r",
+									"\r",
+									"    responseData.tradingDeals.forEach(function(deal) {\r",
+									"        pm.expect(deal.tradingDealId).to.be.a('string').and.not.empty;\r",
+									"        pm.expect(deal.offeringUserName).to.be.a('string').and.not.empty;\r",
+									"        pm.expect(deal.offeringCardName).to.be.a('string').and.not.empty;\r",
+									"        pm.expect(deal.offeringCardDamage).to.be.a('number');\r",
+									"        pm.expect(deal.requiredCardType).to.be.a('string').and.not.empty;\r",
+									"        pm.expect(deal.requiredMinimumDamage).to.be.a('number');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"One of the tradingDealIds matches the environment variable\", function () {\r",
+									"    const tradingDealId = pm.environment.get(\"tradingDealId\");\r",
+									"\r",
+									"    const hasMatchingId = responseData.tradingDeals.some(function(deal) {\r",
+									"        return deal.tradingDealId === tradingDealId;\r",
+									"    });\r",
+									"\r",
+									"    pm.expect(hasMatchingId).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tradings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tradings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Game",
+			"item": [
+				{
+					"name": "Get user stats",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validate properties\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an('object');\r",
+									"    pm.expect(jsonData).to.have.property('userName').that.is.not.empty;\r",
+									"    pm.expect(jsonData).to.have.property('elo').that.is.at.least(1000);\r",
+									"    pm.expect(jsonData).to.have.property('wins').that.is.a('number').and.satisfy((val) => val === null || val >= 0);\r",
+									"    pm.expect(jsonData).to.have.property('losses').that.is.a('number').and.satisfy((val) => val === null || val >= 0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get scoreboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Scoreboard is present and is an array with two entries\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseJSON).to.have.property('scoreboard').that.is.an('array').with.lengthOf.at.least(2)\r",
+									"    \r",
+									"    responseJSON.scoreboard.forEach(function(entry) {\r",
+									"        pm.expect(entry).to.have.property('userName').that.is.not.empty;\r",
+									"        pm.expect(entry).to.have.property('elo').that.is.at.least(1000);\r",
+									"        pm.expect(entry).to.have.property('wins').that.is.a('number').and.satisfy((val) => val === null || val >= 0);\r",
+									"        pm.expect(entry).to.have.property('losses').that.is.a('number').and.satisfy((val) => val === null || val >= 0);\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/scoreboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"scoreboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get cards of the second user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const cards = pm.response.json().cards;\r",
+									"\r",
+									"pm.test(\"Response has valid 'cards' array with required fields for each card\", function () {\r",
+									"    pm.expect(cards).to.be.an('array').and.to.have.lengthOf(5);\r",
+									"\r",
+									"    cards.forEach(function(card) {\r",
+									"        pm.expect(card).to.have.property('id').that.is.not.empty;\r",
+									"        pm.expect(card).to.have.property('name').that.is.a('string').and.is.not.empty;\r",
+									"        pm.expect(card).to.have.property('damage').that.is.a('number').and.is.at.least(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"const deckCardIds = []\r",
+									"for(i = 0; i < 4; i++) {\r",
+									"    deckCardIds[i] = cards[i].id\r",
+									"}\r",
+									"pm.environment.set(\"secondDeckCardIds\",JSON.stringify(deckCardIds))"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secondUserToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add deck for the second user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate deckId, description, and isActive fields in the response\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.exist.and.to.be.a('number').and.to.be.above(0);\r",
+									"    pm.expect(responseData.description).to.exist.and.to.be.a('string').and.to.not.be.empty;\r",
+									"    pm.expect(responseData.isActive).to.exist.and.to.be.a('boolean').and.to.be.false;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Sorted cards arrays from request and response are identical\", function () {\r",
+									"    const requestCardIds = JSON.parse(pm.request.body).cardIds.sort();\r",
+									"\r",
+									"    pm.expect(responseData.cards).to.be.an('array').and.to.have.lengthOf(requestCardIds.length);\r",
+									"\r",
+									"    const responseCardIds = responseData.cards.map(card => card.id).sort();\r",
+									"\r",
+									"    pm.expect(responseCardIds).to.eql(requestCardIds);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"secondDeckId\", responseData.id);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secondUserToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\" : \"{{$randomWord}}\",\r\n    \"cardIds\" : {{secondDeckCardIds}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/decks",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"decks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set active deck for the second user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate cards, deckId, description, and isActive fields in the response\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.exist.and.to.be.a('number').and.to.eql(pm.environment.get(\"secondDeckId\"))\r",
+									"    pm.expect(responseData.description).to.exist.and.to.be.a('string').and.to.not.be.empty;\r",
+									"    pm.expect(responseData.isActive).to.exist.and.to.be.a('boolean').and.to.be.true;\r",
+									"    pm.expect(responseData.cards).to.exist.and.to.be.an('array').and.to.have.lengthOf(4);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each card in the cards array has properties id, name, and damage\", function () {\r",
+									"    responseData.cards.forEach((card) => {\r",
+									"        pm.expect(card).to.have.property('id').that.is.a('string').and.to.not.be.empty;\r",
+									"        pm.expect(card).to.have.property('name').that.is.a('string').and.to.not.be.empty;\r",
+									"        pm.expect(card).to.have.property('damage').that.is.a('number');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secondUserToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/active-deck/{{secondDeckId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"active-deck",
+								"{{secondDeckId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set active deck for the first user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate cards, deckId, description, and isActive fields in the response\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.id).to.exist.and.to.be.a('number').and.to.eql(pm.environment.get(\"deckId\"))\r",
+									"    pm.expect(responseData.description).to.exist.and.to.be.a('string').and.to.not.be.empty;\r",
+									"    pm.expect(responseData.isActive).to.exist.and.to.be.a('boolean').and.to.be.true;\r",
+									"    pm.expect(responseData.cards).to.exist.and.to.be.an('array').and.to.have.lengthOf(4);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each card in the cards array has properties id, name, and damage\", function () {\r",
+									"    responseData.cards.forEach((card) => {\r",
+									"        pm.expect(card).to.have.property('id').that.is.a('string').and.to.not.be.empty;\r",
+									"        pm.expect(card).to.have.property('name').that.is.a('string').and.to.not.be.empty;\r",
+									"        pm.expect(card).to.have.property('damage').that.is.a('number');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/active-deck/{{deckId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"active-deck",
+								"{{deckId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attend battle first",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/battles",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"battles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attend battle second",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secondUserToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/battles",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"battles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Successful POST request\", function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 201,204]);",
+					"});"
+				]
+			}
+		}
+	]
+}
