@@ -5,6 +5,7 @@ namespace MTCG.Services.BattleServices.Battle.Concrete;
 
 public class DefaultBattleEngine : BattleEngine
 {
+
     private readonly BattleRepository _battleRepository;
 
     private readonly BattleLobby _battleLobby;
@@ -28,15 +29,15 @@ public class DefaultBattleEngine : BattleEngine
         if (opponentRequest is null)
         {
             _battleLobby.WaitForOpponent();
-        }
-        else
-        {
-            await _battleArena.BattleAsync(battleRequest, opponentRequest);
-            BattleResult battleResult = await _battleResultsStorage.GetBattleResultAsync(battleRequest);
-            await _battleRepository.SaveBattleResult(battleResult);
+
+            return await _battleResultsStorage.GetBattleResultAsync(battleRequest);
         }
 
-        return await _battleResultsStorage.GetBattleResultAsync(battleRequest);
+        await _battleArena.BattleAsync(battleRequest, opponentRequest);
+        BattleResult battleResult = await _battleResultsStorage.GetBattleResultAsync(battleRequest);
+        await _battleRepository.SaveBattleResult(battleResult);
+
+        return battleResult;
     }
 
 }
