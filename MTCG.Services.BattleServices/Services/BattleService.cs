@@ -1,3 +1,10 @@
-﻿namespace MTCG.Services.BattleServices.Services;
+﻿using MTCG.Services.BattleServices.ViewModels;
 
-public interface BattleService { }
+namespace MTCG.Services.BattleServices.Services;
+
+public interface BattleService
+{
+
+    ValueTask<BattleResultViewModel> BattleAsync(string userName);
+
+}

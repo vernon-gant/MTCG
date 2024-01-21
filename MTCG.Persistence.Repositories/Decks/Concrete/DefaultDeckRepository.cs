@@ -197,7 +197,9 @@ public class DefaultDeckRepository : AbstractRepository, DeckRepository
 
         foreach (Card card in cards)
         {
-            card.Element = elements.First(e => e.ElementId == card.ElementId);
+            Element foundElement = elements.First(e => e.ElementId == card.ElementId);
+            foundElement.Card = card;
+            card.Element = Element.FromElement(foundElement);
         }
 
         return cards;

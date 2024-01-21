@@ -2,6 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using MTCG.Domain;
+using MTCG.Persistence.Repositories.Battles;
+using MTCG.Persistence.Repositories.Battles.Concrete;
 using MTCG.Persistence.Repositories.Cards;
 using MTCG.Persistence.Repositories.Cards.Concrete;
 using MTCG.Persistence.Repositories.Cards.Mappings;
@@ -45,6 +48,7 @@ public static class RepositoriesDefaultsConfigurator
             services.AddSingleton<DeckRepository, DefaultDeckRepository>();
             services.AddSingleton<TradingRepository, DefaultTradingRepository>();
             services.AddSingleton<StatisticsRepository, DefaultStatisticsRepository>();
+            services.AddSingleton<BattleRepository, DefaultBattleRepository>();
         });
 
         return hostBuilder;

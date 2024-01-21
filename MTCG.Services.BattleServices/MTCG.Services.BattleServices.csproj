@@ -8,7 +8,12 @@
 
     <ItemGroup>
         <Folder Include="Exceptions\"/>
-        <Folder Include="Services\Concrete\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MTCG.Persistence.Repositories\MTCG.Persistence.Repositories.csproj" />
+      <ProjectReference Include="..\MTCG.Services.DeckServices\MTCG.Services.DeckServices.csproj" />
+      <ProjectReference Include="..\MTCG.Services.UserServices\MTCG.Services.UserServices.csproj" />
     </ItemGroup>
 
 </Project>
