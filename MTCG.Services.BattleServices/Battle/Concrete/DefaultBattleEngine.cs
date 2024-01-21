@@ -33,7 +33,7 @@ public class DefaultBattleEngine : BattleEngine
             return await _battleResultsStorage.GetBattleResultAsync(battleRequest);
         }
 
-        await _battleArena.BattleAsync(battleRequest, opponentRequest);
+        _battleArena.Battle(battleRequest, opponentRequest);
         BattleResult battleResult = await _battleResultsStorage.GetBattleResultAsync(battleRequest);
         await _battleRepository.SaveBattleResult(battleResult);
 

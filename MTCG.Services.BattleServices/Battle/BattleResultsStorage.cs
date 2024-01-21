@@ -22,7 +22,6 @@ public class BattleResultsStorage
 
     public void StoreBattleResult(BattleRequest userRequest, BattleRequest opponentRequest, BattleResult result)
     {
-        _logger.LogInformation($"Storing battle result for {userRequest.GetHashCode()} and {opponentRequest.GetHashCode()}");
         TaskCompletionSource<BattleResult> completionSource = new ();
         completionSource.SetResult(result);
 
@@ -30,16 +29,12 @@ public class BattleResultsStorage
 
         _battleResults.TryGetValue(opponentRequest, out TaskCompletionSource<BattleResult>? opponentCompletionSource);
         opponentCompletionSource?.SetResult(result);
-
-        _logger.LogInformation($"Stored battle result for {userRequest.GetHashCode()} and {opponentRequest.GetHashCode()}");
     }
 
     public async ValueTask<BattleResult> GetBattleResultAsync(BattleRequest request)
     {
-        _logger.LogInformation($"Waiting for battle result for {request.GetHashCode()} with user {request.User.UserId}");
         TaskCompletionSource<BattleResult> completionSource = _battleResults.GetOrAdd(request, _ => new TaskCompletionSource<BattleResult>());
         BattleResult readyResult = await completionSource.Task;
-        _logger.LogInformation($"Got battle result for {request.GetHashCode()} with user {request.User.UserId}");
         _battleResults.Remove(request, out _);
 
         return readyResult;

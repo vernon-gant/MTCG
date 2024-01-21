@@ -48,7 +48,7 @@ public class DefaultBattleService : BattleService
 
         BattleResult battleResult = await _battleEngine.BattleAsync(new BattleRequest { User = user, Deck = activeDeck });
 
-        return _mapper.Map<BattleResultViewModel>(battleResult);
+        return _mapper.Map<BattleResultViewModel>(battleResult, opt => opt.Items["userName"] = userName);
     }
 
 }

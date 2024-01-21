@@ -98,7 +98,7 @@ CREATE TABLE Battles
 
 CREATE TABLE BattleDecks
 (
-    BattleDeckId INT PRIMARY KEY,
+    BattleDeckId SERIAL PRIMARY KEY,
     BattleId     INT NOT NULL,
     UserId       INT NOT NULL,
     FOREIGN KEY (BattleId) REFERENCES Battles (BattleId) ON DELETE RESTRICT,
