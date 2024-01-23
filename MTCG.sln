@@ -26,6 +26,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.StatisticsSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.BattleServices", "MTCG.Services.BattleServices\MTCG.Services.BattleServices.csproj", "{FE31618F-00AF-4976-8B22-3626987FA673}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.TradingServices.Test", "MTCG.Services.TradingServices.Test\MTCG.Services.TradingServices.Test.csproj", "{FE6DEA4D-E7CB-41FC-939A-4BD63BFCB91D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTCG.Services.PackageServices.Test", "MTCG.Services.PackageServices.Test\MTCG.Services.PackageServices.Test.csproj", "{5D3910C7-8E93-44B0-B268-D301D0D6A6EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,5 +88,13 @@ Global
 		{FE31618F-00AF-4976-8B22-3626987FA673}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE31618F-00AF-4976-8B22-3626987FA673}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE31618F-00AF-4976-8B22-3626987FA673}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE6DEA4D-E7CB-41FC-939A-4BD63BFCB91D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE6DEA4D-E7CB-41FC-939A-4BD63BFCB91D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE6DEA4D-E7CB-41FC-939A-4BD63BFCB91D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE6DEA4D-E7CB-41FC-939A-4BD63BFCB91D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D3910C7-8E93-44B0-B268-D301D0D6A6EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3910C7-8E93-44B0-B268-D301D0D6A6EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3910C7-8E93-44B0-B268-D301D0D6A6EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3910C7-8E93-44B0-B268-D301D0D6A6EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

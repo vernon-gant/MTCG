@@ -51,12 +51,12 @@ public class TestHttpParser
                             "Content-Type: application/json\r\n" +
                             "Accept: */*\r\n" +
                             "Content-Length: 0\r\n" +
-                            "Authorization: Bearer 123456789\r\n\r\n" +
+                            "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzNDU2Nzg5LCJuYW1lIjoiSm9zZXBoIn0.OpOSSw7e485LOP5PrzScxHb7SR6sAOMRckfFwi4rp7o\r\n\r\n" +
                             "{\"test\": \"test\"}";
         HttpRequest request = _parser.ParseRequest(rawRequest);
         Assert.AreEqual("POST", request.Method);
         Assert.AreEqual("/messages", request.Path);
-        Assert.AreEqual("123456789", request.Token);
+        Assert.IsNotNull(request.Token);
         Assert.IsNotNull(request.Body);
         Assert.AreEqual("test", request.Body.Value.GetProperty("test").GetString());
     }

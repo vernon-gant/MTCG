@@ -14,14 +14,14 @@
   &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\6.0.0" Loaded="True" /&gt;&#xD;
   &lt;PhysicalFolder Path="C:\Users\aleks\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\7.0.0" Loaded="True" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3e9dacdd_002De40d_002D4f2e_002D8ae4_002D60b129a5c63c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TCPListener_StartAsync_ShouldProcessRequestAndReturnHello" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=13f77836_002Dc300_002D4034_002Da113_002D1110cd4f8615/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="DefaultPackageServiceTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;MSTest::02FE6775-20B8-4A2B-A65E-0C74B313DF8D::net7.0::MTCG.Http.Test.TestTcpListener&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;MSTest::02FE6775-20B8-4A2B-A65E-0C74B313DF8D::net7.0::MTCG.Http.Test.TestHttpParser.TestParseRequest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;MSTest::02FE6775-20B8-4A2B-A65E-0C74B313DF8D::net7.0::MTCG.Http.Test.TestHttpParser.Parser_ParseGetRequestWithBody&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;MSTest::02FE6775-20B8-4A2B-A65E-0C74B313DF8D::net7.0::MTCG.Http.Test.TestHttpParser&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::5D3910C7-8E93-44B0-B268-D301D0D6A6EB::net7.0::MTCG.Services.PackageServices.Test.DefaultPackageServiceTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	
+	
+	
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=deletedon/@EntryIndexedValue">True</s:Boolean>
 	
 	</wpf:ResourceDictionary>
